@@ -23,7 +23,11 @@ class UniversityViewSet(mixins.CreateModelMixin,
     serializer_class = UniversityFullSerializer
 
 
-class ProfessorViewSet(viewsets.ModelViewSet):
+class ProfessorViewSet(mixins.CreateModelMixin,
+                       mixins.RetrieveModelMixin,
+                       mixins.UpdateModelMixin,
+                       mixins.ListModelMixin,
+                       viewsets.GenericViewSet):
     queryset = Professor.objects.all()
     serializer_class = ProfessorSerializer
 

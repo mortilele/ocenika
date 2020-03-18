@@ -1,7 +1,7 @@
 from django.db import models
-from utils.models import IntegerRangeField
-from utils.file_upload import university_path, professor_path
-from utils import constants
+from ..utils.models import IntegerRangeField
+from ..utils.file_upload import university_path, professor_path
+from ..utils import constants
 from django.db.models import Avg
 from django.utils import timezone
 
@@ -63,7 +63,7 @@ class ProfessorRatingManager(models.Manager):
         professor_ratings = ProfessorRating.objects.filter(professor=professor,
                                                            email=email)
         if professor_ratings.exists():
-            last_rating = professor_ratings.order_by('-created_at',).first()
+            last_rating = professor_ratings.order_by('-created_at', ).first()
             if (timezone.now() - last_rating.created_at).days < 7:
                 return True
         return False
@@ -91,4 +91,20 @@ class ProfessorRating(models.Model):
         self.professor.recalculate_average_rating()
 
 
+class Subject(models.Model):
+    class Meta:
+        verbose_name = 'Предмет'
+        verbose_name_plural = 'Предметы'
 
+    name = models.CharField(max_length=100, verbose_name='Название предмета')
+    abbreviation = models.CharField(max_length=15, verbose_name='Аббревиатура', blank=True, null=True)
+    professors = models.ManyToManyField(Professor, related_name='subjects', verbose_name='Преподаватели этого предмета')
+    university = models.ForeignKey(University, related_name='subjects', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.abbreviation:
+            self.abbreviation = "".join(w[0].upper() for w in self.name.split())
+        super(Subject, self).save(*args, **kwargs)

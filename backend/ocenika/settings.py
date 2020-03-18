@@ -39,66 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
     'api',
-    'suit',
 ]
-
-SUIT_CONFIG = {
-    'ADMIN_NAME': '1FIT',
-    'MENU': (
-        'sites',
-        {'app': 'auth', 'label': 'Авторизация', 'icon': 'icon-lock'},
-        {'label': 'Пользователи', 'icon': 'icon-user', 'models': (
-            'authe.mainuser',
-            'main.usersubscription',
-        )},
-        {'label': 'Токены', 'url': 'authe.tokenlog',
-         'icon': 'icon-user'},
-        {'label': 'Фитнес', 'icon': 'icon-cog', 'models': (
-            'main.company',
-            'main.fitness',
-            'main.trainingtemplate',
-            'main.training',
-            'main.question',
-            'main.sporttype',
-            'main.subscription',
-            'main.visit'
-        )},
-        {'label': 'Промо', 'icon': 'icon-cog', 'models': (
-            'promo.poll',
-            'promo.question',
-            'promo.gift',
-            'promo.promogift'
-        )},
-        {'label': 'Оплаты', 'icon': 'icon-cog', 'models': (
-            'payments.callback',
-            'payments.cptransaction',
-            'payments.payboxtransaction',
-            'payments.callbackpaybox',
-            'payments.paymenttype'
-        )},
-        {'label': 'Periodic tasks', 'icon': 'icon-cog', 'models': (
-            'django_celery_beat.periodictask',
-        )},
-        {'label': 'Выплаты', 'url': '/api/moderators/pay_outs', 'icon': 'icon-upload'},
-        {'label': 'Сводная таблица', 'url': '/api/moderators/standings/',
-         'icon': 'icon-upload'},
-        {'label': 'Тестовые пуши', 'url': '/api/push/testsend/',
-         'icon': 'icon-upload'},
-        {'label': 'Звонки клиентам', 'url': '/api/dashboard/calls/',
-         'icon': 'icon-upload'},
-        {'label': 'Хистограмма залов', 'url': '/api/moderators/histogram/',
-         'icon': 'icon-upload'},
-        {'label': 'Отправить пуш', 'url': '/api/push/custom/',
-         'icon': 'icon-upload'},
-        {'label': 'Посещения пользователя', 'url': '/api/moderators/uservisits/',
-         'icon': 'icon-upload'},
-        {'label': 'Список блоггеров', 'url': '/api/moderators/bloggerlist/',
-         'icon': 'icon-upload'},
-        {'label': 'Посещения на карте', 'url': '/api/dashboard/visits_map/',
-         'icon': 'icon-upload'},
-    )
-}
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -113,9 +56,12 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

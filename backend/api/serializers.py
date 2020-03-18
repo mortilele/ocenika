@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from api.models import University, Professor, ProfessorRating
+from api.models import University, Professor, ProfessorRating, Subject
 from utils import constants
 from rest_framework import status
 import logging
@@ -12,6 +12,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ['url', 'username', 'email', 'password']
+
+
+class SubjectShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subject
+        fields = ['id', 'name', 'abbreviation']
 
 
 class UniversitySerializer(serializers.ModelSerializer):
@@ -41,11 +47,12 @@ class ProfessorRatingSerializer(serializers.ModelSerializer):
 class ProfessorSerializer(serializers.ModelSerializer):
     ratings = ProfessorRatingSerializer(many=True, read_only=True)
     universities = UniversitySerializer(many=True)
+    subjects = SubjectShortSerializer(many=True, read_only=True)
 
     class Meta:
         model = Professor
         fields = ['id', 'first_name', 'last_name', 'patronymic',
-                  'full_name', 'avatar', 'ratings',
+                  'full_name', 'avatar', 'ratings', 'subjects',
                   'average_rating', 'rating_count', 'universities'
                   ]
 
@@ -90,8 +97,8 @@ class ProfessorShortSerializer(serializers.ModelSerializer):
 class UniversityFullSerializer(serializers.ModelSerializer):
     class Meta:
         model = University
-        fields = '__all__'
+        fields = ['id', 'name', 'abbreviation', 'description', 'logo', 'professor_set', 'subjects']
 
     professor_set = ProfessorShortSerializer(many=True, read_only=True)
-
+    subjects = SubjectShortSerializer(many=True, read_only=True)
 
