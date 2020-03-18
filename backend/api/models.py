@@ -1,7 +1,7 @@
 from django.db import models
-from ..utils.models import IntegerRangeField
-from ..utils.file_upload import university_path, professor_path
-from ..utils import constants
+from utils.models import IntegerRangeField
+from utils.file_upload import university_path, professor_path
+from utils import constants
 from django.db.models import Avg
 from django.utils import timezone
 
