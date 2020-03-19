@@ -1,0 +1,45 @@
+.site-logo {
+  display: inline-block;
+  font-size: 30px;
+  padding: 14px 80px 14px 40px;
+  color: #fdef96;
+}
+
+.header-section {
+  padding-left: 15px;
+  padding-right: 20px;
+  background: rgb(20,37,36);
+  background: linear-gradient(90deg, rgba(20,37,36,1) 0%, rgba(17,71,64,1) 50%, rgba(0,25,23,1) 100%);
+  border-bottom: 5px solid #fdef96;
+
+}
+
+
+.main-menu {
+  list-style: none;
+  display: inline-block;
+}
+
+.main-menu li {
+  display: inline-block;
+  position: relative;
+}
+
+.main-menu li a {
+  display: block;
+  color: #FFFFFF;
+  padding: 24px 10px;
+  font-size: 18px;
+  margin-left: 15px;
+}
+
+.main-menu li a:hover {
+  color: #fdef96
+}
+
+a:hover {
+  color: #fdef96
+}
+a {
+  text-decoration: none;
+}
