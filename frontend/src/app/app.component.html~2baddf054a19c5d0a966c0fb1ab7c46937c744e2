@@ -1,0 +1,9 @@
+<app-header></app-header>
+<app-banner></app-banner>
+<h2> List of universities </h2>
+<ul>
+  <li *ngFor="let university of universities">
+      <h2> {{university.name}}</h2>
+      <img src="{{university.logo}}">
+  </li>
+</ul>
