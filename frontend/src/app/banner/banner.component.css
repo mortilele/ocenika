@@ -1,0 +1,64 @@
+.banner {
+  background-image: url("prepod5.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  height: 748px;
+  padding-bottom: 90px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+}
+
+.container {
+  padding-top: 7%;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col-6 {
+  flex: 0 0 50%;
+  width: 50%;
+}
+
+.banner-text {
+  float: right;
+  max-width: 700px;
+  padding: 20px 20px;
+  background: #0A2423;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+h2 {
+  color: #fff;
+  font-size: 50px;
+  margin-bottom: 25px;
+  line-height: 0.9;
+  top: 50px;
+}
+
+h3, h4 {
+  color: #FFFFFF;
+  line-height: 3;
+}
+
+.question {
+  padding-left: 80px;
+  text-align: left;
+}
+
+.info {
+  color: #fdef96;
+  margin-right: 5px;
+}
