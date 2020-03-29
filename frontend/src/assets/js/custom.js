@@ -1,6 +1,7 @@
+
 (function($) {
     'use strict';
-
+    console.log('loaded custom script');
     // Main Navigation
     $( '.hamburger-menu' ).on( 'click', function() {
         $(this).toggleClass('open');

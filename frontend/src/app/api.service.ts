@@ -15,7 +15,17 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   getAllUniversities(): Observable<any> {
-    return this.http.get(this.baseUrl + '/api/university/',
+    return this.http.get(this.baseUrl + '/api/universities/',
       {headers: this.httpHeaders});
   }
+
+
+  getMetrics(): Observable<any> {
+    return this.http.get(this.baseUrl + '/api/metrics/', {headers: this.httpHeaders});
+  }
+
+  getProfessors(): Observable<any> {
+    return this.http.get(this.baseUrl + '/api/professors/', {headers: this.httpHeaders});
+  }
+
 }

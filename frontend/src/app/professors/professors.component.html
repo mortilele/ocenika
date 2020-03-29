@@ -1,0 +1,28 @@
+<app-nav-bar></app-nav-bar>
+
+
+<div class="hero-content">
+  <div class="hero-content-overlay">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="professor-content-wrap flex flex-column align-items-start">
+            <header class="entry-header">
+              <h2> Преподаватели</h2>
+              <input placeholder="Справа еще добавить фильтрацию">
+            </header><!-- .entry-header -->
+            <div class="entry-content professor-card" *ngFor="let professor of professors">
+              <img src="{{professor.avatar}}">
+              <div class="professor-card-content">
+                <h3>{{professor.full_name}}</h3>
+                <h6>{{toStringJoin(professor.universities)}} <span *ngIf="professor.subjects.length"> Предметы: {{toStringJoin(professor.subjects)}}</span></h6>
+                <h5><span> {{professor.rating_count}}</span> отзывов</h5>
+              </div>
+            </div><!-- .entry-content -->
+          </div><!-- .hero-content-wrap -->
+        </div><!-- .col -->
+      </div><!-- .row -->
+    </div><!-- .container -->
+  </div><!-- .hero-content-hero-content-overlay -->
+</div><!-- .hero-content -->
+<app-footer></app-footer>
