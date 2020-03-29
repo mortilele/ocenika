@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from .models import University, Professor, ProfessorRating
 from .serializers import ProfessorSerializer, UserSerializer, UniversityFullSerializer, \
     ProfessorCreateSerializer, ProfessorRatingSerializer
@@ -6,6 +5,7 @@ from rest_framework import mixins, viewsets, permissions
 from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework import generics
+from django.http import JsonResponse
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -52,3 +52,15 @@ class ProfessorRatingViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         data = serializer.complete()
         return Response(data)
+
+
+def count_metrics(request):
+    professors = Professor.objects.count()
+    universities = University.objects.count()
+    reviews = ProfessorRating.objects.count()
+
+    return JsonResponse({
+        'professors': professors,
+        'universities': universities,
+        'reviews': reviews
+    })
