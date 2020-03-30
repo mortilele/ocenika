@@ -15,7 +15,9 @@ import { MainNewsComponent } from './main-news/main-news.component';
 import {LazyLoadScriptService} from './lazy-load-script.service';
 import { ProfessorsComponent } from './professors/professors.component';
 import { MainComponent } from './main/main.component';
-import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { SubHeaderComponent } from './sub-header/sub-header.component';
+import { ProfessorDetailComponent } from './professor-detail/professor-detail.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,12 +33,14 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     MainNewsComponent,
     ProfessorsComponent,
     MainComponent,
-    NavBarComponent
+    SubHeaderComponent,
+    ProfessorDetailComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
   ],
   providers: [LazyLoadScriptService],
   bootstrap: [AppComponent]

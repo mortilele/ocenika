@@ -4,5 +4,5 @@ export const scripts = [
   '/assets/js/jquery.js',
   '/assets/js/masonry.pkgd.min.js',
   '/assets/js/jquery.collapsible.min.js',
-  '/assets/js/custom.js'
+  '/assets/js/custom.js',
 ];

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {Comment} from './comment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,10 @@ export class ApiService {
   httpHeaders = new HttpHeaders(
     {'Content-Type': 'application/json'}
   );
+
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
   constructor(private http: HttpClient) { }
 
@@ -26,6 +32,14 @@ export class ApiService {
 
   getProfessors(): Observable<any> {
     return this.http.get(this.baseUrl + '/api/professors/', {headers: this.httpHeaders});
+  }
+
+  getProfessor(id): Observable<any> {
+    return this.http.get(this.baseUrl + '/api/professors/' + id + '/', {headers: this.httpHeaders});
+  }
+
+  addComment(comment: Comment) {
+    return this.http.post(this.baseUrl + '/api/ratings/', comment, this.httpOptions);
   }
 
 }

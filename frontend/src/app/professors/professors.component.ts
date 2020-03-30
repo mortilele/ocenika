@@ -8,6 +8,7 @@ import {ApiService} from '../api.service';
 })
 export class ProfessorsComponent implements OnInit {
   professors;
+  universities;
 
   constructor(
     private apiService: ApiService
@@ -15,6 +16,7 @@ export class ProfessorsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProfessors();
+    this.getUniversities();
   }
 
   getProfessors() {
@@ -23,6 +25,10 @@ export class ProfessorsComponent implements OnInit {
 
   toStringJoin(data) {
     return data.map(r => r.abbreviation).join(', ');
+  }
+
+  getUniversities() {
+    this.apiService.getAllUniversities().subscribe(universities => this.universities = universities)
   }
 
 

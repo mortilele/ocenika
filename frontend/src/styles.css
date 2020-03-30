@@ -2348,7 +2348,7 @@ ul.author-social-profile li:hover .fa {
 
 .post-comments-wrap .comment-wrap {
   float: right;
-  width: calc(100% - 92px);
+  width: 100%;
   margin-top: 32px;
 }
 
@@ -2365,13 +2365,14 @@ ul.author-social-profile li:hover .fa {
 .post-comments-wrap .comment-author .comment-meta a {
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
   color: #19c880;
 }
 
 .post-comments-wrap p {
   margin-top: 5px;
-  color: #757686;
+  letter-spacing: 0.12em;
+  color: #383749;
+  font-size: 20px;
 }
 
 .post-comments-wrap .reply {
@@ -2457,7 +2458,7 @@ ul.author-social-profile li:hover .fa {
   border-color: #19c880;
 }
 
-.comment-form input[type="submit"] {
+.comment-form .submit{
   padding: 16px 32px;
   margin-top: 40px;
   margin-bottom: 10px;
