@@ -1,11 +1,15 @@
+
 from .models import University, Professor, ProfessorRating
 from .serializers import ProfessorSerializer, UserSerializer, UniversityFullSerializer, \
     ProfessorCreateSerializer, ProfessorRatingSerializer
 from rest_framework import mixins, viewsets, permissions
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework.decorators import action
+from rest_framework import filters
 from django.contrib.auth.models import User
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 from django.http import JsonResponse
 
@@ -32,6 +36,9 @@ class ProfessorViewSet(mixins.CreateModelMixin,
                        viewsets.GenericViewSet):
     queryset = Professor.objects.all()
     serializer_class = ProfessorSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ['full_name', 'subjects__name', 'subjects__abbreviation', 'universities__name', 'universities__abbreviation']
+    filterset_fields = ['universities', ]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -53,8 +60,29 @@ class ProfessorRatingViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        data = serializer.complete()
-        return Response(data)
+        data, status = serializer.complete()
+        return Response(data, status)
+
+    @action(detail=False, methods=['get'])
+    def total_ratings(self, request):
+        professor_id = self.request.query_params['professor_id']
+        professor_ratings = ProfessorRating.objects.filter(professor_id=professor_id)
+        ones = professor_ratings.filter(value=1).count()
+        twos = professor_ratings.filter(value=2).count()
+        threes = professor_ratings.filter(value=3).count()
+        fours = professor_ratings.filter(value=4).count()
+        fives = professor_ratings.filter(value=5).count()
+        total = professor_ratings.count();
+        average = round((ones * 1 + twos * 2 + threes * 3 + fours * 4 + fives * 5) / total)
+        return JsonResponse({
+            'ones': ones,
+            'twos': twos,
+            'threes': threes,
+            "fours": fours,
+            'fives': fives,
+            'total': total,
+            'average': average
+        })
 
 
 def count_metrics(request):
@@ -67,3 +95,4 @@ def count_metrics(request):
         'universities': universities,
         'reviews': reviews
     })
+
