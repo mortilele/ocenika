@@ -1,5 +1,5 @@
 <app-header></app-header>
-<app-sub-header [title]="'Преподаватели'"></app-sub-header>
+<app-sub-header [title]="'Преподаватели'" [url]="'/professors'"></app-sub-header>
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-8">
@@ -56,16 +56,16 @@
     <div class="col-12 col-lg-4">
       <div class="sidebar">
         <div class="search-widget">
-          <form class="flex flex-wrap align-items-center">
-            <input type="search" placeholder="Найти...">
-            <button type="submit" class="flex justify-content-center align-items-center"><i class="fa fa-search"></i></button>
-          </form><!-- .flex -->
+          <div class="flex flex-wrap align-items-center">
+            <input type="search" [(ngModel)]="search" placeholder="Найти...">
+            <button (click)="getProfessorByName()" class="flex justify-content-center align-items-center"><i class="fa fa-search"></i></button>
+          </div><!-- .flex -->
         </div><!-- .search-widget -->
 
         <div class="cat-links">
           <h2>Университеты</h2>
           <ul class="p-0 m-0" >
-            <li *ngFor="let university of universities"><a href="#">{{university.name}}</a></li>
+            <li *ngFor="let university of universities"><a (click)="getProfessorsByUniversity(university.id)">{{university.name}}</a></li>
           </ul>
         </div><!-- .cat-links -->
 

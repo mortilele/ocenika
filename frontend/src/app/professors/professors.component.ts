@@ -9,6 +9,7 @@ import {ApiService} from '../api.service';
 export class ProfessorsComponent implements OnInit {
   professors;
   universities;
+  search = '';
 
   constructor(
     private apiService: ApiService
@@ -28,9 +29,15 @@ export class ProfessorsComponent implements OnInit {
   }
 
   getUniversities() {
-    this.apiService.getAllUniversities().subscribe(universities => this.universities = universities)
+    this.apiService.getAllUniversities().subscribe(universities => this.universities = universities);
   }
 
+  getProfessorsByUniversity(universityId) {
+    this.apiService.getProfessorsByUniversity(universityId).subscribe(professors => this.professors = professors);
+  }
 
-
+  getProfessorByName() {
+    console.log(this.search);
+    this.apiService.getProfessorByName(this.search).subscribe(professors => this.professors = professors);
+  }
 }

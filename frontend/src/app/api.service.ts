@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import {Comment} from './comment';
 
 
@@ -22,7 +23,10 @@ export class ApiService {
 
   getAllUniversities(): Observable<any> {
     return this.http.get(this.baseUrl + '/api/universities/',
-      {headers: this.httpHeaders});
+      {headers: this.httpHeaders})
+      .pipe(
+        catchError(this.handleError<any>('get universities', []))
+      );
   }
 
 
@@ -38,8 +42,34 @@ export class ApiService {
     return this.http.get(this.baseUrl + '/api/professors/' + id + '/', {headers: this.httpHeaders});
   }
 
-  addComment(comment: Comment) {
-    return this.http.post(this.baseUrl + '/api/ratings/', comment, this.httpOptions);
+  addComment(comment: Comment): Observable<any> {
+    return this.http.post(this.baseUrl + '/api/ratings/', comment, this.httpOptions)
+      .pipe(tap((newComment: Comment) => console.log('added comment')),
+      catchError(this.handleError<any>('add here'))
+      );
+  }
+
+  getProfessorRatingCount(id): Observable<any> {
+    return this.http.get(this.baseUrl + '/api/ratings/total_ratings/', {params: {professor_id: id}, headers: this.httpHeaders});
+  }
+
+  getProfessorsByUniversity(id): Observable<any> {
+    return this.http.get(this.baseUrl + '/api/professors/', {params: {universities: id}, headers: this.httpHeaders});
+  }
+
+  getProfessorByName(name): Observable<any> {
+    return this.http.get(this.baseUrl + '/api/professors/', {params: {search: name}, headers: this.httpHeaders});
+  }
+
+
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+
+      return of(result as T);
+    };
   }
 
 }

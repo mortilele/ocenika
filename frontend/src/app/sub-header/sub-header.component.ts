@@ -7,6 +7,8 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class SubHeaderComponent implements OnInit {
   @Input() title = 'Главная';
+  @Input() url = '/';
+
 
   constructor() { }
 

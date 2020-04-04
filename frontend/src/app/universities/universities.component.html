@@ -15,7 +15,7 @@
 
           <div class="course-content-wrap">
             <header class="entry-header">
-              <h2 class="entry-title"><a href="#">{{university.abbreviation}} </a></h2>
+              <h2 class="entry-title">{{university.abbreviation}}</h2>
 
               <div class="entry-meta flex align-items-center">
                 <div class="course-author">Курсов </div>
@@ -26,7 +26,7 @@
 
             <footer class="entry-footer flex justify-content-between align-items-center">
               <div class="course-cost">
-                <a href="">Преподавателей - {{university.professor_set.length}} </a>
+                <a routerLink="/professors">Преподавателей - {{university.professor_set.length}} </a>
               </div><!-- .course-cost -->
 
             </footer><!-- .entry-footer -->

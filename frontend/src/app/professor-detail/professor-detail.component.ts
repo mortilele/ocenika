@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '../api.service';
 import {Comment} from '../comment';
 
@@ -12,17 +11,19 @@ import {Comment} from '../comment';
 export class ProfessorDetailComponent implements OnInit {
 
   professor;
+  ratings;
   comment = new Comment();
-  bookName;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
+    public router: Router,
     private apiService: ApiService
   ) { }
 
   ngOnInit(): void {
     this.getProfessor();
+    this.getProfessorRatingFilter();
+    // this.statsReviews();
   }
 
   getProfessor() {
@@ -30,12 +31,33 @@ export class ProfessorDetailComponent implements OnInit {
     this.apiService.getProfessor(id).subscribe(professor => this.professor = professor);
   }
 
+  getProfessorRatingFilter() {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.apiService.getProfessorRatingCount(id).subscribe(ratings => this.ratings = ratings);
+  }
+
   addComment(): void {
     this.comment.professor = this.professor.id;
     this.apiService.addComment(this.comment)
-      .subscribe( book => {
-        this.bookName = book;
+      .subscribe( comment => {
+        this.professor.ratings.push(comment);
+        this.getProfessorRatingFilter();
+        console.log(comment.value);
       });
+  }
+
+  statsReviews(total, value) {
+    return value * 100 / total;
+  }
+
+  convertDate(date) {
+    let convertedDateString = date.toLocaleString();
+    convertedDateString = convertedDateString.replace('at ', '');
+    return new Date(convertedDateString);
+  }
+
+  range(n) {
+      return Array(Math.max(0, Math.min(5, n)));
   }
 
 
