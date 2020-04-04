@@ -24,9 +24,19 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/css/bootstrap.min.css",
+              "src/css/bootstrap.css",
+              "src/css/elegant-fonts.css",
+              "src/css/swiper.min.css",
+              "src/css/swiper.css",
+              "src/css/font-awesome.css",
+              "src/css/themify-icons.css",
+              "src/styles.css",
+              "src/css/w3.css"
             ],
-            "scripts": []
+            "scripts": [
+
+            ]
           },
           "configurations": {
             "production": {

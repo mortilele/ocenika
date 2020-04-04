@@ -1,28 +1,26 @@
-import { Component } from '@angular/core';
-import {ApiService} from './api.service';
+import {Component, OnInit} from '@angular/core';
+import {LazyLoadScriptService} from './lazy-load-script.service';
+import {scripts} from './scripts';
+
+declare var $;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'frontend';
-  universities: any;
+export class AppComponent implements OnInit {
+  title = 'Ocenika';
 
-  constructor(private api: ApiService) {
-    this.getUniversities();
-    console.log(this.universities);
+
+  constructor(private lazyLoadService: LazyLoadScriptService) {
   }
 
-  getUniversities() {
-    this.api.getAllUniversities().subscribe(
-      data => {
-        this.universities = data;
-      },
-      error => {
-        console.error(error);
-      });
+  ngOnInit() {
+    for (const scriptUrl of scripts) {
+      this.lazyLoadService.loadScript(scriptUrl);
+    }
   }
+
 
 }
