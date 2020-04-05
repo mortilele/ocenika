@@ -72,8 +72,8 @@ class ProfessorRatingViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         threes = professor_ratings.filter(value=3).count()
         fours = professor_ratings.filter(value=4).count()
         fives = professor_ratings.filter(value=5).count()
-        total = professor_ratings.count();
-        average = round((ones * 1 + twos * 2 + threes * 3 + fours * 4 + fives * 5) / total)
+        total = professor_ratings.count()
+        average = round((ones * 1 + twos * 2 + threes * 3 + fours * 4 + fives * 5) / total) if total else 0
         return JsonResponse({
             'ones': ones,
             'twos': twos,
