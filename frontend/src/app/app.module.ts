@@ -18,6 +18,8 @@ import { MainComponent } from './main/main.component';
 import { SubHeaderComponent } from './sub-header/sub-header.component';
 import { ProfessorDetailComponent } from './professor-detail/professor-detail.component';
 import {FormsModule} from '@angular/forms';
+import { LogInComponent } from './log-in/log-in.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import {FormsModule} from '@angular/forms';
     ProfessorsComponent,
     MainComponent,
     SubHeaderComponent,
-    ProfessorDetailComponent
+    ProfessorDetailComponent,
+    LogInComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
