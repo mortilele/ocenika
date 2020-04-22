@@ -3,15 +3,6 @@ from django.contrib.auth.models import User
 from api.models import University, Professor, ProfessorRating, Subject
 from utils import constants
 from rest_framework import status
-import logging
-
-logger = logging.getLogger(__name__)
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'password']
 
 
 class SubjectShortSerializer(serializers.ModelSerializer):
@@ -90,7 +81,6 @@ class ProfessorCreateSerializer(serializers.ModelSerializer):
                 professor.universities.add(university)
             professor.save()
         except Exception as e:
-            logger.error(str(e))
             return status.HTTP_400_BAD_REQUEST
 
 

@@ -6,8 +6,6 @@ from django.db.models import Avg
 from django.utils import timezone
 
 
-# Create your models here.
-
 class University(models.Model):
     class Meta:
         verbose_name = 'Университет'

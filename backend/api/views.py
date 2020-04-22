@@ -1,23 +1,16 @@
 
 from .models import University, Professor, ProfessorRating
-from .serializers import ProfessorSerializer, UserSerializer, UniversityFullSerializer, \
+from .serializers import ProfessorSerializer, UniversityFullSerializer, \
     ProfessorCreateSerializer, ProfessorRatingSerializer
-from rest_framework import mixins, viewsets, permissions
+from rest_framework import mixins, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import filters
-from django.contrib.auth.models import User
 from django_filters.rest_framework import DjangoFilterBackend
 
 
 from django.http import JsonResponse
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
 class UniversityViewSet(mixins.CreateModelMixin,
