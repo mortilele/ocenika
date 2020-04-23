@@ -1,7 +1,6 @@
 
 from .models import University, Professor, ProfessorRating
-from .serializers import ProfessorSerializer, UniversityFullSerializer, \
-    ProfessorCreateSerializer, ProfessorRatingSerializer
+from .serializers import ProfessorSerializer, UniversityFullSerializer, ProfessorRatingSerializer
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -9,22 +8,17 @@ from rest_framework.decorators import action
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
-
 from django.http import JsonResponse
 
 
-class UniversityViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
+class UniversityViewSet(mixins.RetrieveModelMixin,
                         mixins.ListModelMixin,
                         viewsets.GenericViewSet):
     queryset = University.objects.all()
     serializer_class = UniversityFullSerializer
 
 
-class ProfessorViewSet(mixins.CreateModelMixin,
-                       mixins.RetrieveModelMixin,
-                       mixins.UpdateModelMixin,
+class ProfessorViewSet(mixins.RetrieveModelMixin,
                        mixins.ListModelMixin,
                        viewsets.GenericViewSet):
     queryset = Professor.objects.all()
@@ -32,17 +26,6 @@ class ProfessorViewSet(mixins.CreateModelMixin,
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['full_name', 'subjects__name', 'subjects__abbreviation', 'universities__name', 'universities__abbreviation']
     filterset_fields = ['universities', ]
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        professor = serializer.complete()
-        return Response(ProfessorSerializer(professor).data)
-
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return ProfessorCreateSerializer
-        return ProfessorSerializer
 
 
 class ProfessorRatingViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):

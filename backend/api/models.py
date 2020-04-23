@@ -1,5 +1,4 @@
 from django.db import models
-from utils.models import IntegerRangeField
 from utils.file_upload import university_path, professor_path
 from utils import constants
 from django.db.models import Avg
@@ -74,7 +73,7 @@ class ProfessorRating(models.Model):
 
     email = models.EmailField(max_length=50, verbose_name='Email')
     review = models.TextField(verbose_name='Отзыв', default='')
-    value = IntegerRangeField(min_value=0, max_value=5, default=0, blank=True)
+    value = models.PositiveSmallIntegerField(default=0, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     professor = models.ForeignKey(Professor,
