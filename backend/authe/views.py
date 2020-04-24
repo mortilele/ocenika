@@ -19,7 +19,6 @@ class UserViewSet(viewsets.GenericViewSet,
             self.permission_classes = [permissions.IsAuthenticated]
         return super(UserViewSet, self).get_permissions()
 
-
     def list(self, request, *args, **kwargs):
         user = self.request.user
         serializer = UserSerializer(user)
