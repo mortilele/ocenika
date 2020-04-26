@@ -29,19 +29,25 @@ class UniversitySerializer(serializers.ModelSerializer):
 class ProfessorRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfessorRating
-        exclude = ['updated_at',]
+        exclude = ('updated_at',)
         extra_kwargs = {
             'email': {'write_only': True},
             'professor': {'write_only': True}
         }
 
+    def to_representation(self, instance):
+        output = super().to_representation(instance)
+        output['created_at'] = instance.created_at.strftime("%Y-%m-%d")
+        return output
+
     def complete(self):
         email = self.validated_data['email']
         professor = self.validated_data['professor']
         if ProfessorRating.objects.last_review_in_week(email, professor):
-            return constants.REVIEW_ALREADY_SUBMITTED
-        ProfessorRating.objects.create(**self.validated_data)
-        return status.HTTP_201_CREATED
+            return constants.REVIEW_ALREADY_SUBMITTED, status.HTTP_400_BAD_REQUEST
+        rating = ProfessorRating.objects.create(**self.validated_data)
+        serializer = ProfessorRatingSerializer(instance=rating)
+        return serializer.data, status.HTTP_201_CREATED
 
 
 class ProfessorSerializer(serializers.ModelSerializer):

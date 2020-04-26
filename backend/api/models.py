@@ -1,7 +1,7 @@
 from django.db import models
-from ..utils.models import IntegerRangeField
-from ..utils.file_upload import university_path, professor_path
-from ..utils import constants
+from utils.models import IntegerRangeField
+from utils.file_upload import university_path, professor_path
+from utils import constants
 from django.db.models import Avg
 from django.utils import timezone
 
@@ -13,8 +13,8 @@ class University(models.Model):
         verbose_name = 'Университет'
         verbose_name_plural = 'Университеты'
 
-    name = models.CharField(max_length=100, verbose_name='Название')
-    abbreviation = models.CharField(max_length=15, verbose_name='Аббревиатура', blank=True, null=True)
+    name = models.CharField(max_length=500, verbose_name='Название')
+    abbreviation = models.CharField(max_length=300, verbose_name='Аббревиатура', blank=True, null=True)
     description = models.CharField(max_length=1000, blank=True, null=True, verbose_name='Описание')
     logo = models.ImageField(upload_to=university_path, verbose_name='Лого', null=True, default=constants.NO_IMAGE)
 
@@ -34,19 +34,18 @@ class Professor(models.Model):
 
     first_name = models.CharField(max_length=50, verbose_name='Имя')
     last_name = models.CharField(max_length=50, verbose_name='Фамилия')
-    patronymic = models.CharField(blank=True, null=True, max_length=50, verbose_name='Отчество')
+    patronymic = models.CharField(default='', blank=True, max_length=50, verbose_name='Отчество')
     full_name = models.CharField(blank=True, null=True, max_length=200, verbose_name='ФИО')
     universities = models.ManyToManyField(University, verbose_name='Университеты в котором он преподает')
     average_rating = models.PositiveIntegerField(default=0, verbose_name='Средний рейтинг')
     rating_count = models.PositiveIntegerField(default=0, verbose_name='Количество оценок')
-    avatar = models.ImageField(upload_to=professor_path, verbose_name='Аватар', null=True, default=constants.NO_IMAGE)
+    avatar = models.ImageField(upload_to=professor_path, verbose_name='Аватар', null=True, default=constants.NO_AVATAR)
 
     def __str__(self):
         return self.full_name
 
     def save(self, *args, **kwargs):
-        if not self.full_name:
-            self.full_name = '{} {} {}'.format(self.first_name, self.last_name, self.patronymic)
+        self.full_name = '{} {} {}'.format(self.first_name, self.last_name, self.patronymic)
         super(Professor, self).save(*args, **kwargs)
 
     def recalculate_average_rating(self):
@@ -96,8 +95,8 @@ class Subject(models.Model):
         verbose_name = 'Предмет'
         verbose_name_plural = 'Предметы'
 
-    name = models.CharField(max_length=100, verbose_name='Название предмета')
-    abbreviation = models.CharField(max_length=15, verbose_name='Аббревиатура', blank=True, null=True)
+    name = models.CharField(max_length=300, verbose_name='Название предмета')
+    abbreviation = models.CharField(max_length=300, verbose_name='Аббревиатура', blank=True, null=True)
     professors = models.ManyToManyField(Professor, related_name='subjects', verbose_name='Преподаватели этого предмета')
     university = models.ForeignKey(University, related_name='subjects', on_delete=models.CASCADE)
 
@@ -105,6 +104,8 @@ class Subject(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.abbreviation:
+        if len(self.name.split()) != 1:
             self.abbreviation = "".join(w[0].upper() for w in self.name.split())
+        else:
+            self.abbreviation = self.name
         super(Subject, self).save(*args, **kwargs)
