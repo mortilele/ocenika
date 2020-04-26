@@ -11,7 +11,7 @@ import {University} from './university';
 })
 export class ApiService {
 
-  baseUrl = 'http://127.0.0.1:8000';
+  baseUrl = 'http://api.ocenika.com';
   httpHeaders = new HttpHeaders(
     {'Content-Type': 'application/json'}
   );
