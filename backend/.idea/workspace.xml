@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6cfa2f85-4686-491e-9ff0-c7aee194fd74" name="Default Changelist" comment="" />
+    <list default="true" id="6cfa2f85-4686-491e-9ff0-c7aee194fd74" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/backend.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,7 +30,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
     <configuration name="backend" type="Python.DjangoServer" factoryName="Django server">
@@ -117,6 +122,7 @@
       <workItem from="1587732539185" duration="332000" />
       <workItem from="1587740553629" duration="1543000" />
       <workItem from="1587789389142" duration="374000" />
+      <workItem from="1587892819954" duration="408000" />
     </task>
     <servers />
   </component>
@@ -152,10 +158,10 @@
       <screen x="0" y="27" width="1920" height="1005" />
     </state>
     <state width="1874" height="260" key="GridCell.Tab.0.right/0.27.1920.1005@0.27.1920.1005" timestamp="1586034050643" />
-    <state x="449" y="164" width="1022" height="737" key="SettingsEditor" timestamp="1585486446384">
+    <state x="449" y="164" width="1022" height="737" key="SettingsEditor" timestamp="1587892802452">
       <screen x="0" y="27" width="1920" height="1005" />
     </state>
-    <state x="449" y="164" width="1022" height="737" key="SettingsEditor/0.27.1920.1005@0.27.1920.1005" timestamp="1585486446384" />
+    <state x="449" y="164" width="1022" height="737" key="SettingsEditor/0.27.1920.1005@0.27.1920.1005" timestamp="1587892802452" />
     <state x="616" y="357" key="com.intellij.ide.util.TipDialog" timestamp="1586322319911">
       <screen x="0" y="27" width="1920" height="1005" />
     </state>
