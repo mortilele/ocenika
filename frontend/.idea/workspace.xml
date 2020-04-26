@@ -60,6 +60,7 @@
       <change beforePath="$PROJECT_DIR$/../backend/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/utils/cloud_payments.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/utils/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/@angular-devkit/architect/node_modules/rxjs/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@angular-devkit/architect/node_modules/rxjs/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/@angular-devkit/architect/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@angular-devkit/architect/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/@angular-devkit/build-angular/node_modules/rxjs/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@angular-devkit/build-angular/node_modules/rxjs/package.json" afterDir="false" />
