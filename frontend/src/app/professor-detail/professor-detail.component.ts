@@ -23,7 +23,7 @@ export class ProfessorDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.getUserData();
+    this.getUserData();
     this.getProfessor();
     this.getProfessorRatingFilter();
   }
@@ -39,13 +39,16 @@ export class ProfessorDetailComponent implements OnInit {
   }
 
   addComment(): void {
-    this.comment.professor = this.professor.id;
-    this.apiService.addComment(this.comment)
-      .subscribe( comment => {
-        this.professor.ratings.push(comment);
-        this.getProfessorRatingFilter();
-        console.log(comment.value);
-      });
+    if (this.authService.loggedIn()) {
+      this.comment.professor = this.professor.id;
+      this.apiService.addComment(this.comment)
+        .subscribe( comment => {
+          this.professor.ratings.push(comment);
+          this.getProfessorRatingFilter();
+          console.log(comment.value);
+        });
+    }
+    else alert('Вам нужно войти')
   }
 
   statsReviews(total, value) {
