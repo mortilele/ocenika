@@ -1,7 +1,7 @@
 from .models import University, Professor, ProfessorRating
 from .serializers import ProfessorSerializer, UniversityFullSerializer, ProfessorRatingSerializer
 from rest_framework import mixins, viewsets
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
@@ -29,7 +29,7 @@ class ProfessorViewSet(mixins.RetrieveModelMixin,
 class ProfessorRatingViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = ProfessorRating.objects.all()
     serializer_class = ProfessorRatingSerializer
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated, ]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
