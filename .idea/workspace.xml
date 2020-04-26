@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="98c1e34c-7a2f-4b9f-830e-b5eeffe7e81f" name="Default Changelist" comment="" />
+    <list default="true" id="98c1e34c-7a2f-4b9f-830e-b5eeffe7e81f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/backend/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/professor-detail/professor-detail.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/professor-detail/professor-detail.component.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,10 +24,12 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/backend" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/frontend/node_modules/typescript/lib" />
   </component>
   <component name="RunManager">
     <configuration name="ocenika.com" type="Python.DjangoServer" factoryName="Django server">
@@ -78,7 +84,7 @@
       <workItem from="1585024149909" duration="632000" />
       <workItem from="1585025363191" duration="3458000" />
       <workItem from="1585325696551" duration="5425000" />
-      <workItem from="1587640172755" duration="141000" />
+      <workItem from="1587913972577" duration="779000" />
     </task>
     <servers />
   </component>

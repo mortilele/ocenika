@@ -23,7 +23,7 @@ export class ProfessorDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getUserData();
+    // this.getUserData();
     this.getProfessor();
     this.getProfessorRatingFilter();
   }
