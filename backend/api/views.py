@@ -1,10 +1,8 @@
-
 from .models import University, Professor, ProfessorRating
 from .serializers import ProfessorSerializer, UniversityFullSerializer, ProfessorRatingSerializer
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.decorators import action
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -39,26 +37,26 @@ class ProfessorRatingViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         data, status = serializer.complete()
         return Response(data, status)
 
-    @action(detail=False, methods=['get'])
-    def total_ratings(self, request):
-        professor_id = self.request.query_params['professor_id']
-        professor_ratings = ProfessorRating.objects.filter(professor_id=professor_id)
-        ones = professor_ratings.filter(value=1).count()
-        twos = professor_ratings.filter(value=2).count()
-        threes = professor_ratings.filter(value=3).count()
-        fours = professor_ratings.filter(value=4).count()
-        fives = professor_ratings.filter(value=5).count()
-        total = professor_ratings.count()
-        average = round((ones * 1 + twos * 2 + threes * 3 + fours * 4 + fives * 5) / total) if total else 0
-        return JsonResponse({
-            'ones': ones,
-            'twos': twos,
-            'threes': threes,
-            "fours": fours,
-            'fives': fives,
-            'total': total,
-            'average': average
-        })
+
+def total_ratings(request):
+    professor_id = request.GET['professor_id']
+    professor_ratings = ProfessorRating.objects.filter(professor_id=professor_id)
+    ones = professor_ratings.filter(value=1).count()
+    twos = professor_ratings.filter(value=2).count()
+    threes = professor_ratings.filter(value=3).count()
+    fours = professor_ratings.filter(value=4).count()
+    fives = professor_ratings.filter(value=5).count()
+    total = professor_ratings.count()
+    average = round((ones * 1 + twos * 2 + threes * 3 + fours * 4 + fives * 5) / total) if total else 0
+    return JsonResponse({
+        'ones': ones,
+        'twos': twos,
+        'threes': threes,
+        "fours": fours,
+        'fives': fives,
+        'total': total,
+        'average': average
+    })
 
 
 def count_metrics(request):

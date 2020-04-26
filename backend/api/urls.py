@@ -11,6 +11,7 @@ router.register(r'ratings', views.ProfessorRatingViewSet)
 
 urlpatterns = [
     url(r'metrics', views.count_metrics),
+    url(r'ratings/total_ratings', views.count_metrics),
 ]
 
 urlpatterns += router.urls

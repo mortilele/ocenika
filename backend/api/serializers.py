@@ -4,10 +4,10 @@ from utils import constants
 from rest_framework import status
 
 
-class SubjectShortSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Subject
-        fields = ['id', 'name', 'abbreviation']
+class SubjectShortSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+    abbreviation = serializers.CharField()
 
 
 class UniversitySerializer(serializers.ModelSerializer):
@@ -49,10 +49,9 @@ class ProfessorSerializer(serializers.ModelSerializer):
                   ]
 
 
-class ProfessorShortSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Professor
-        fields = ['full_name', 'avatar']
+class ProfessorShortSerializer(serializers.Serializer):
+    full_name = serializers.CharField()
+    avatar = serializers.FileField()
 
 
 class UniversityFullSerializer(serializers.ModelSerializer):
