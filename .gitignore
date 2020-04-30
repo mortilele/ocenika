@@ -3,3 +3,5 @@
 /backend/.idea/
 /backend/db.sqlite3
 /frontend/.idea/
+__pycache__/
+*.py[cod]
