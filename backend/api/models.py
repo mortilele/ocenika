@@ -4,9 +4,8 @@ from utils.file_upload import university_path, professor_path
 from utils import constants
 from django.db.models import Avg
 from django.utils import timezone
+from django.contrib.auth.models import User
 
-
-# Create your models here.
 
 class University(models.Model):
     class Meta:
@@ -14,9 +13,9 @@ class University(models.Model):
         verbose_name_plural = 'Университеты'
 
     name = models.CharField(max_length=500, verbose_name='Название')
-    abbreviation = models.CharField(max_length=300, verbose_name='Аббревиатура', blank=True, null=True)
+    abbreviation = models.CharField(max_length=500, verbose_name='Аббревиатура', blank=True, null=True)
     description = models.CharField(max_length=1000, blank=True, null=True, verbose_name='Описание')
-    logo = models.ImageField(upload_to=university_path, verbose_name='Лого', null=True, default=constants.NO_IMAGE)
+    logo = models.ImageField(upload_to=university_path, max_length=1000, verbose_name='Лого', null=True, default=constants.NO_IMAGE)
 
     def __str__(self):
         return self.name
@@ -40,6 +39,10 @@ class Professor(models.Model):
     average_rating = models.PositiveIntegerField(default=0, verbose_name='Средний рейтинг')
     rating_count = models.PositiveIntegerField(default=0, verbose_name='Количество оценок')
     avatar = models.ImageField(upload_to=professor_path, verbose_name='Аватар', null=True, default=constants.NO_AVATAR)
+    paid_users = models.ManyToManyField(User,
+                                        verbose_name='Список кто может смотреть отзывы',
+                                        related_name='paid_professors',
+                                        blank=True)
 
     def __str__(self):
         return self.full_name
@@ -83,6 +86,10 @@ class ProfessorRating(models.Model):
                                   on_delete=models.CASCADE,
                                   related_name='ratings',
                                   verbose_name='Преподаватель')
+    status = models.CharField(verbose_name='Статус',
+                              max_length=100,
+                              choices=constants.REVIEW_STATUSES,
+                              default=constants.ON_MODERATION)
     objects = ProfessorRatingManager()
 
     def save(self, *args, **kwargs):

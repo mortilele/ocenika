@@ -1,17 +1,7 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 from api.models import University, Professor, ProfessorRating, Subject
 from utils import constants
 from rest_framework import status
-import logging
-
-logger = logging.getLogger(__name__)
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'password']
 
 
 class SubjectShortSerializer(serializers.ModelSerializer):
@@ -62,36 +52,11 @@ class ProfessorSerializer(serializers.ModelSerializer):
                   'average_rating', 'rating_count', 'universities'
                   ]
 
-        read_only_fields = ['full_name', 'average_rating', 'rating_count']
-        extra_kwargs = {
-            'first_name': {'write_only': True},
-            'last_name': {'write_only': True},
-            'patronymic': {'write_only': True}
-        }
-
 
 class ProfessorCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Professor
         exclude = ('full_name', 'rating_count', 'average_rating')
-
-    def complete(self):
-        try:
-            data = {
-                'first_name': self.validated_data['first_name'],
-                'last_name': self.validated_data['last_name'],
-                'patronymic': self.validated_data['patronymic'],
-            }
-            professor = Professor(**data)
-            professor.save()
-            if self.validated_data.get('avatar'):
-                professor.avatar = self.validated_data['avatar']
-            for university in self.validated_data['universities']:
-                professor.universities.add(university)
-            professor.save()
-        except Exception as e:
-            logger.error(str(e))
-            return status.HTTP_400_BAD_REQUEST
 
 
 class ProfessorShortSerializer(serializers.ModelSerializer):

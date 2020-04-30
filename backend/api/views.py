@@ -1,23 +1,15 @@
 
 from .models import University, Professor, ProfessorRating
-from .serializers import ProfessorSerializer, UserSerializer, UniversityFullSerializer, \
-    ProfessorCreateSerializer, ProfessorRatingSerializer
-from rest_framework import mixins, viewsets, permissions
-from rest_framework.permissions import AllowAny
+from api import serializers
+from rest_framework import mixins, viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import filters
-from django.contrib.auth.models import User
 from django_filters.rest_framework import DjangoFilterBackend
 
 
 from django.http import JsonResponse
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
 class UniversityViewSet(mixins.CreateModelMixin,
@@ -26,7 +18,7 @@ class UniversityViewSet(mixins.CreateModelMixin,
                         mixins.ListModelMixin,
                         viewsets.GenericViewSet):
     queryset = University.objects.all()
-    serializer_class = UniversityFullSerializer
+    serializer_class = serializers.UniversityFullSerializer
 
 
 class ProfessorViewSet(mixins.CreateModelMixin,
@@ -35,27 +27,16 @@ class ProfessorViewSet(mixins.CreateModelMixin,
                        mixins.ListModelMixin,
                        viewsets.GenericViewSet):
     queryset = Professor.objects.all()
-    serializer_class = ProfessorSerializer
+    serializer_class = serializers.ProfessorSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['full_name', 'subjects__name', 'subjects__abbreviation', 'universities__name', 'universities__abbreviation']
     filterset_fields = ['universities', ]
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        professor = serializer.complete()
-        return Response(ProfessorSerializer(professor).data)
-
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return ProfessorCreateSerializer
-        return ProfessorSerializer
-
 
 class ProfessorRatingViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = ProfessorRating.objects.all()
-    serializer_class = ProfessorRatingSerializer
-    permission_classes = [AllowAny, ]
+    serializer_class = serializers.ProfessorRatingSerializer
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
