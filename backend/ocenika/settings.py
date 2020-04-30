@@ -96,22 +96,22 @@ WSGI_APPLICATION = 'ocenika.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ocenika',
-        'USER': 'ocenika',
-        'PASSWORD': 'ocenikapass',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'ocenika',
+#         'USER': 'ocenika',
+#         'PASSWORD': 'ocenikapass',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 SUIT_CONFIG = {
     'ADMIN_NAME': 'OCENIKA'
