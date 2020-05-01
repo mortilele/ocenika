@@ -4,10 +4,10 @@ from utils import constants
 from rest_framework import status
 
 
-class SubjectShortSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    name = serializers.CharField()
-    abbreviation = serializers.CharField()
+class SubjectShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subject
+        fields = ['id', 'name', 'abbreviation']
 
 
 class UniversitySerializer(serializers.ModelSerializer):
@@ -20,6 +20,10 @@ class ProfessorRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfessorRating
         exclude = ('updated_at',)
+        extra_kwargs = {
+            'email': {'write_only': True},
+            'professor': {'write_only': True}
+        }
 
     def to_representation(self, instance):
         output = super().to_representation(instance)
@@ -49,9 +53,10 @@ class ProfessorSerializer(serializers.ModelSerializer):
                   ]
 
 
-class ProfessorShortSerializer(serializers.Serializer):
-    full_name = serializers.CharField()
-    avatar = serializers.FileField()
+class ProfessorShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Professor
+        fields = ['full_name', 'avatar']
 
 
 class UniversityFullSerializer(serializers.ModelSerializer):

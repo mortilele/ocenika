@@ -1,8 +1,10 @@
 from django.db import models
+from utils.models import IntegerRangeField
 from utils.file_upload import university_path, professor_path
 from utils import constants
 from django.db.models import Avg
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class University(models.Model):
@@ -11,16 +13,19 @@ class University(models.Model):
         verbose_name_plural = 'Университеты'
 
     name = models.CharField(max_length=500, verbose_name='Название')
-    abbreviation = models.CharField(max_length=300, verbose_name='Аббревиатура', blank=True, null=True)
+    abbreviation = models.CharField(max_length=500, verbose_name='Аббревиатура', blank=True, null=True)
     description = models.CharField(max_length=1000, blank=True, null=True, verbose_name='Описание')
-    logo = models.ImageField(upload_to=university_path, verbose_name='Лого', null=True, default=constants.NO_IMAGE)
+    logo = models.ImageField(upload_to=university_path, max_length=1000, verbose_name='Лого', null=True, default=constants.NO_IMAGE)
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
         if not self.abbreviation:
-            self.abbreviation = "".join(w[0].upper() for w in self.name.split())
+            if len(self.name.split()) != 1:
+                self.abbreviation = "".join(w[0].upper() for w in self.name.split())
+            else:
+                self.abbreviation = self.name
         super(University, self).save(*args, **kwargs)
 
 
@@ -37,6 +42,10 @@ class Professor(models.Model):
     average_rating = models.PositiveIntegerField(default=0, verbose_name='Средний рейтинг')
     rating_count = models.PositiveIntegerField(default=0, verbose_name='Количество оценок')
     avatar = models.ImageField(upload_to=professor_path, verbose_name='Аватар', null=True, default=constants.NO_AVATAR)
+    paid_users = models.ManyToManyField(User,
+                                        verbose_name='Список кто может смотреть отзывы',
+                                        related_name='paid_professors',
+                                        blank=True)
 
     def __str__(self):
         return self.full_name
@@ -73,13 +82,17 @@ class ProfessorRating(models.Model):
 
     email = models.EmailField(max_length=50, verbose_name='Email')
     review = models.TextField(verbose_name='Отзыв', default='')
-    value = models.PositiveSmallIntegerField(default=0, blank=True)
+    value = IntegerRangeField(min_value=0, max_value=5, default=0, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     professor = models.ForeignKey(Professor,
                                   on_delete=models.CASCADE,
                                   related_name='ratings',
                                   verbose_name='Преподаватель')
+    status = models.CharField(verbose_name='Статус',
+                              max_length=100,
+                              choices=constants.REVIEW_STATUSES,
+                              default=constants.ON_MODERATION)
     objects = ProfessorRatingManager()
 
     def save(self, *args, **kwargs):
@@ -94,15 +107,19 @@ class Subject(models.Model):
 
     name = models.CharField(max_length=300, verbose_name='Название предмета')
     abbreviation = models.CharField(max_length=300, verbose_name='Аббревиатура', blank=True, null=True)
-    professors = models.ManyToManyField(Professor, related_name='subjects', verbose_name='Преподаватели этого предмета')
+    professors = models.ManyToManyField(Professor,
+                                        related_name='subjects',
+                                        verbose_name='Преподаватели этого предмета',
+                                        blank=True)
     university = models.ForeignKey(University, related_name='subjects', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
-        if len(self.name.split()) != 1:
-            self.abbreviation = "".join(w[0].upper() for w in self.name.split())
-        else:
-            self.abbreviation = self.name
+        if not self.abbreviation:
+            if len(self.name.split()) != 1:
+                self.abbreviation = "".join(w[0].upper() for w in self.name.split())
+            else:
+                self.abbreviation = self.name
         super(Subject, self).save(*args, **kwargs)
