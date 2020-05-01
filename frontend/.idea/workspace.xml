@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d844cccc-b0dc-4950-8b18-7c77b80334b0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/app/api.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/api.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/auth.service.ts" afterDir="false" />
-    </list>
+    <list default="true" id="d844cccc-b0dc-4950-8b18-7c77b80334b0" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -114,7 +111,7 @@
       <workItem from="1587882958164" duration="58000" />
       <workItem from="1587901296048" duration="3052000" />
       <workItem from="1588335207593" duration="754000" />
-      <workItem from="1588336586218" duration="30000" />
+      <workItem from="1588336586218" duration="242000" />
     </task>
     <servers />
   </component>
