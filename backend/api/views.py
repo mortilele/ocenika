@@ -36,7 +36,7 @@ class ProfessorViewSet(mixins.CreateModelMixin,
 class ProfessorRatingViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = ProfessorRating.objects.all()
     serializer_class = serializers.ProfessorRatingSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
