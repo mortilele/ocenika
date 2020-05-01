@@ -22,7 +22,10 @@ class University(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.abbreviation:
-            self.abbreviation = "".join(w[0].upper() for w in self.name.split())
+            if len(self.name.split()) != 1:
+                self.abbreviation = "".join(w[0].upper() for w in self.name.split())
+            else:
+                self.abbreviation = self.name
         super(University, self).save(*args, **kwargs)
 
 
@@ -30,6 +33,7 @@ class Professor(models.Model):
     class Meta:
         verbose_name = 'Преподователь'
         verbose_name_plural = 'Преподаватели'
+        ordering = ['id']
 
     first_name = models.CharField(max_length=50, verbose_name='Имя')
     last_name = models.CharField(max_length=50, verbose_name='Фамилия')
@@ -104,15 +108,19 @@ class Subject(models.Model):
 
     name = models.CharField(max_length=300, verbose_name='Название предмета')
     abbreviation = models.CharField(max_length=300, verbose_name='Аббревиатура', blank=True, null=True)
-    professors = models.ManyToManyField(Professor, related_name='subjects', verbose_name='Преподаватели этого предмета')
+    professors = models.ManyToManyField(Professor,
+                                        related_name='subjects',
+                                        verbose_name='Преподаватели этого предмета',
+                                        blank=True)
     university = models.ForeignKey(University, related_name='subjects', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
-        if len(self.name.split()) != 1:
-            self.abbreviation = "".join(w[0].upper() for w in self.name.split())
-        else:
-            self.abbreviation = self.name
+        if not self.abbreviation:
+            if len(self.name.split()) != 1:
+                self.abbreviation = "".join(w[0].upper() for w in self.name.split())
+            else:
+                self.abbreviation = self.name
         super(Subject, self).save(*args, **kwargs)
