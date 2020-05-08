@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'api',
     'authe',
-    'payments'
 ]
 
 REST_FRAMEWORK = {
@@ -55,6 +54,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
@@ -160,3 +160,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+AUTH_USER_MODEL = 'authe.User'
+EMAIL_HOST_USER = 'ali.mars.99@gmail.com'
+EMAIL_HOST_PASSWORD = 'alik_larisa'

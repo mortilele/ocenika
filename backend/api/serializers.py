@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import University, Professor, ProfessorRating, Subject
+from api.models import University, Professor, ProfessorReview, Subject
 from utils import constants
 from rest_framework import status
 
@@ -16,9 +16,9 @@ class UniversitySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProfessorRatingSerializer(serializers.ModelSerializer):
+class ProfessorReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProfessorRating
+        model = ProfessorReview
         exclude = ('updated_at',)
         extra_kwargs = {
             'email': {'write_only': True},
@@ -33,17 +33,17 @@ class ProfessorRatingSerializer(serializers.ModelSerializer):
     def complete(self):
         email = self.validated_data['email']
         professor = self.validated_data['professor']
-        if ProfessorRating.objects.last_review_in_week(email, professor):
+        if ProfessorReview.objects.last_review_in_week(email, professor):
             return constants.REVIEW_ALREADY_SUBMITTED, status.HTTP_400_BAD_REQUEST
-        rating = ProfessorRating.objects.create(**self.validated_data)
-        serializer = ProfessorRatingSerializer(instance=rating)
+        rating = ProfessorReview.objects.create(**self.validated_data)
+        serializer = ProfessorReviewSerializer(instance=rating)
         return serializer.data, status.HTTP_201_CREATED
 
 
 class ProfessorSerializer(serializers.ModelSerializer):
-    ratings = ProfessorRatingSerializer(many=True, read_only=True)
     universities = UniversitySerializer(many=True)
     subjects = SubjectShortSerializer(many=True, read_only=True)
+    ratings = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Professor
@@ -51,6 +51,14 @@ class ProfessorSerializer(serializers.ModelSerializer):
                   'full_name', 'avatar', 'ratings', 'subjects',
                   'average_rating', 'rating_count', 'universities'
                   ]
+
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        result['ratings'] = result['ratings'][:3]
+        return result
+
+    def get_ratings(self, obj):
+        return ProfessorReviewSerializer(obj.ratings.filter(status=constants.ACTIVE), many=True).data
 
 
 class ProfessorCreateSerializer(serializers.ModelSerializer):

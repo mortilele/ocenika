@@ -1,5 +1,5 @@
-
-from .models import University, Professor, ProfessorRating
+from utils import constants
+from .models import University, Professor, ProfessorReview
 from api import serializers
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
+from django.contrib.auth.models import User
 
 
 from django.http import JsonResponse
@@ -28,15 +29,28 @@ class ProfessorViewSet(mixins.CreateModelMixin,
                        viewsets.GenericViewSet):
     queryset = Professor.objects.all()
     serializer_class = serializers.ProfessorSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['full_name', 'subjects__name', 'subjects__abbreviation', 'universities__name', 'universities__abbreviation']
     filterset_fields = ['universities', ]
+    ordering_fields = ['last_name', 'full_name']
+    ordering = ['last_name']
 
 
-class ProfessorRatingViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
-    queryset = ProfessorRating.objects.all()
-    serializer_class = serializers.ProfessorRatingSerializer
-    permission_classes = [AllowAny]
+class ProfessorReviewViewSet(mixins.CreateModelMixin,
+                             mixins.ListModelMixin,
+                             viewsets.GenericViewSet):
+    queryset = ProfessorReview.objects.filter(status=constants.ACTIVE)
+    serializer_class = serializers.ProfessorReviewSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['professor', ]
+    permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action in ['total_ratings', 'last_ratings']:
+            self.permission_classes = [AllowAny, ]
+        else:
+            self.permission_classes = [IsAuthenticated, ]
+        return super().get_permissions()
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -47,7 +61,7 @@ class ProfessorRatingViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     @action(detail=False, methods=['get'])
     def total_ratings(self, request):
         professor_id = self.request.query_params['professor_id']
-        professor_ratings = ProfessorRating.objects.filter(professor_id=professor_id)
+        professor_ratings = ProfessorReview.objects.filter(professor_id=professor_id)
         ones = professor_ratings.filter(value=1).count()
         twos = professor_ratings.filter(value=2).count()
         threes = professor_ratings.filter(value=3).count()
@@ -65,15 +79,23 @@ class ProfessorRatingViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             'average': average
         })
 
+    @action(detail=False, methods=['get'])
+    def last_ratings(self, request):
+        last_ratings = ProfessorReview.objects.filter(status=constants.ACTIVE).order_by('-created_at')[:10]
+        return Response(serializers.ProfessorReviewSerializer(last_ratings, many=True).data)
+
 
 def count_metrics(request):
     professors = Professor.objects.count()
     universities = University.objects.count()
-    reviews = ProfessorRating.objects.count()
+    reviews = ProfessorReview.objects.count()
+    users = User.objects.filter(is_active=True).count()
 
     return JsonResponse({
         'professors': professors,
         'universities': universities,
-        'reviews': reviews
+        'reviews': reviews,
+        'users': users
     })
+
 

@@ -4,7 +4,7 @@ from utils.file_upload import university_path, professor_path
 from utils import constants
 from django.db.models import Avg
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class University(models.Model):
@@ -15,7 +15,8 @@ class University(models.Model):
     name = models.CharField(max_length=500, verbose_name='Название')
     abbreviation = models.CharField(max_length=500, verbose_name='Аббревиатура', blank=True, null=True)
     description = models.CharField(max_length=1000, blank=True, null=True, verbose_name='Описание')
-    logo = models.ImageField(upload_to=university_path, max_length=1000, verbose_name='Лого', null=True, default=constants.NO_IMAGE)
+    logo = models.ImageField(upload_to=university_path, max_length=1000, verbose_name='Лого', null=True,
+                             default=constants.NO_IMAGE)
 
     def __str__(self):
         return self.name
@@ -43,10 +44,6 @@ class Professor(models.Model):
     average_rating = models.PositiveIntegerField(default=0, verbose_name='Средний рейтинг')
     rating_count = models.PositiveIntegerField(default=0, verbose_name='Количество оценок')
     avatar = models.ImageField(upload_to=professor_path, verbose_name='Аватар', null=True, default=constants.NO_AVATAR)
-    paid_users = models.ManyToManyField(User,
-                                        verbose_name='Список кто может смотреть отзывы',
-                                        related_name='paid_professors',
-                                        blank=True)
 
     def __str__(self):
         return self.full_name
@@ -62,11 +59,11 @@ class Professor(models.Model):
             self.save()
 
 
-class ProfessorRatingManager(models.Manager):
+class ProfessorReviewManager(models.Manager):
 
     @staticmethod
     def last_review_in_week(email, professor):
-        professor_ratings = ProfessorRating.objects.filter(professor=professor,
+        professor_ratings = ProfessorReview.objects.filter(professor=professor,
                                                            email=email)
         if professor_ratings.exists():
             last_rating = professor_ratings.order_by('-created_at', ).first()
@@ -75,13 +72,15 @@ class ProfessorRatingManager(models.Manager):
         return False
 
 
-class ProfessorRating(models.Model):
+class ProfessorReview(models.Model):
     class Meta:
         verbose_name = 'Оценка преподавателя'
         verbose_name_plural = 'Оценки преподавателя'
         ordering = ['-created_at']
 
-    email = models.EmailField(max_length=50, verbose_name='Email')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.DO_NOTHING,
+                             related_name='professor_reviews')
     review = models.TextField(verbose_name='Отзыв', default='')
     value = IntegerRangeField(min_value=0, max_value=5, default=0, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -94,11 +93,14 @@ class ProfessorRating(models.Model):
                               max_length=100,
                               choices=constants.REVIEW_STATUSES,
                               default=constants.ON_MODERATION)
-    objects = ProfessorRatingManager()
+    objects = ProfessorReviewManager()
 
     def save(self, *args, **kwargs):
-        super(ProfessorRating, self).save(*args, **kwargs)
+        super(ProfessorReview, self).save(*args, **kwargs)
         self.professor.recalculate_average_rating()
+
+    def __str__(self):
+        return f'{self.professor} {self.status}'
 
 
 class Subject(models.Model):
@@ -112,7 +114,9 @@ class Subject(models.Model):
                                         related_name='subjects',
                                         verbose_name='Преподаватели этого предмета',
                                         blank=True)
-    university = models.ForeignKey(University, related_name='subjects', on_delete=models.CASCADE)
+    university = models.ManyToManyField(University,
+                                        related_name='subjects',
+                                        blank=True)
 
     def __str__(self):
         return self.name
@@ -124,3 +128,27 @@ class Subject(models.Model):
             else:
                 self.abbreviation = self.name
         super(Subject, self).save(*args, **kwargs)
+
+
+class RatingApplication(models.Model):
+    class Meta:
+        verbose_name = 'Заявка на действительность отзыва'
+        verbose_name_plural = 'Заявки на действильность отзыва'
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE,
+                             related_name='applications')
+    review = models.OneToOneField(ProfessorReview,
+                                  on_delete=models.CASCADE,
+                                  related_name='application')
+    user_proof_data = models.TextField(verbose_name='Текстовое доказательство',
+                                       blank=True)
+    user_proof_file = models.FileField(verbose_name='Файловое доказательство',
+                                       blank=True)
+    status = models.CharField(verbose_name='Статус',
+                              max_length=50,
+                              choices=constants.APPLICATION_STATUSES,
+                              default=constants.ON_MODERATION)
+
+    def __str__(self):
+        return f'{self.user} {self.review} {self.status}'
