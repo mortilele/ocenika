@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'is@dnr2%++$p-_+k6)gn!_^kf#o!ig8&s(pt_xf^ysau+yo26t'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -93,7 +91,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ocenika.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -118,7 +115,6 @@ SUIT_CONFIG = {
     'ADMIN_NAME': 'OCENIKA'
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -137,7 +133,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -151,7 +146,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -161,5 +155,11 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 AUTH_USER_MODEL = 'authe.User'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST_USER = 'ali.mars.99@gmail.com'
 EMAIL_HOST_PASSWORD = 'alik_larisa'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+FROM_EMAIL = 'ali.mars.99@gmail.com'
+EMAIL_USE_TLS = True

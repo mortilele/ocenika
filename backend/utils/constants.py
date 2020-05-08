@@ -4,18 +4,13 @@ REVIEW_ALREADY_SUBMITTED = 'Вы уже оставляли отзыв данно
 
 
 ON_MODERATION = 'На модерации'
-ACTIVE = 'Принят'
+ACTIVE = 'Активный'
 DECLINED = 'Отказан'
 ACCEPTED = 'Принят'
 
 REVIEW_STATUSES = (
     (ON_MODERATION, ON_MODERATION),
-    (ACTIVE, ACTIVE),
-    (DECLINED, DECLINED)
-)
-
-APPLICATION_STATUSES = (
-    (ON_MODERATION, ON_MODERATION),
     (ACCEPTED, ACCEPTED),
     (DECLINED, DECLINED)
 )
+

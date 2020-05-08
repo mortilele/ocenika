@@ -39,7 +39,7 @@ class ProfessorViewSet(mixins.CreateModelMixin,
 class ProfessorReviewViewSet(mixins.CreateModelMixin,
                              mixins.ListModelMixin,
                              viewsets.GenericViewSet):
-    queryset = ProfessorReview.objects.filter(status=constants.ACTIVE)
+    queryset = ProfessorReview.objects.filter(status=constants.ACCEPTED)
     serializer_class = serializers.ProfessorReviewSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['professor', ]

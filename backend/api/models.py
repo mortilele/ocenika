@@ -40,7 +40,9 @@ class Professor(models.Model):
     last_name = models.CharField(max_length=50, verbose_name='Фамилия')
     patronymic = models.CharField(default='', blank=True, max_length=50, verbose_name='Отчество')
     full_name = models.CharField(blank=True, null=True, max_length=200, verbose_name='ФИО')
-    universities = models.ManyToManyField(University, verbose_name='Университеты в котором он преподает')
+    universities = models.ManyToManyField(University,
+                                          verbose_name='Университеты в котором он преподает',
+                                          blank=True)
     average_rating = models.PositiveIntegerField(default=0, verbose_name='Средний рейтинг')
     rating_count = models.PositiveIntegerField(default=0, verbose_name='Количество оценок')
     avatar = models.ImageField(upload_to=professor_path, verbose_name='Аватар', null=True, default=constants.NO_AVATAR)
@@ -62,10 +64,10 @@ class Professor(models.Model):
 class ProfessorReviewManager(models.Manager):
 
     @staticmethod
-    def last_review_in_week(email, professor):
+    def last_review_in_week(user, professor):
         professor_ratings = ProfessorReview.objects.filter(professor=professor,
-                                                           email=email)
-        if professor_ratings.exists():
+                                                           user=user)
+        if professor_ratings:
             last_rating = professor_ratings.order_by('-created_at', ).first()
             if (timezone.now() - last_rating.created_at).days < 7:
                 return True
@@ -81,7 +83,7 @@ class ProfessorReview(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.DO_NOTHING,
                              related_name='professor_reviews')
-    review = models.TextField(verbose_name='Отзыв', default='')
+    review = models.TextField(verbose_name='Отзыв')
     value = IntegerRangeField(min_value=0, max_value=5, default=0, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -145,10 +147,8 @@ class RatingApplication(models.Model):
                                        blank=True)
     user_proof_file = models.FileField(verbose_name='Файловое доказательство',
                                        blank=True)
-    status = models.CharField(verbose_name='Статус',
-                              max_length=50,
-                              choices=constants.APPLICATION_STATUSES,
-                              default=constants.ON_MODERATION)
+    is_viewed = models.BooleanField(default=False,
+                                    verbose_name='Рассмотрен?')
 
     def __str__(self):
-        return f'{self.user} {self.review} {self.status}'
+        return f'{self.user} {self.review}'

@@ -19,9 +19,8 @@ class UniversitySerializer(serializers.ModelSerializer):
 class ProfessorReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfessorReview
-        exclude = ('updated_at',)
+        exclude = ('updated_at', 'user')
         extra_kwargs = {
-            'email': {'write_only': True},
             'professor': {'write_only': True}
         }
 
@@ -31,10 +30,11 @@ class ProfessorReviewSerializer(serializers.ModelSerializer):
         return output
 
     def complete(self):
-        email = self.validated_data['email']
         professor = self.validated_data['professor']
-        if ProfessorReview.objects.last_review_in_week(email, professor):
-            return constants.REVIEW_ALREADY_SUBMITTED, status.HTTP_400_BAD_REQUEST
+        user = self.context['request'].user
+        # if ProfessorReview.objects.last_review_in_week(user, professor):
+        #     return constants.REVIEW_ALREADY_SUBMITTED, status.HTTP_400_BAD_REQUEST
+        self.validated_data['user'] = user
         rating = ProfessorReview.objects.create(**self.validated_data)
         serializer = ProfessorReviewSerializer(instance=rating)
         return serializer.data, status.HTTP_201_CREATED

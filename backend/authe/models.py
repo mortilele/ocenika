@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.db import models
 from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
@@ -41,5 +42,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.first_name
 
-    def email_user(self, subject, message, from_email=None, **kwargs):
-        send_mail(subject, message, from_email, [self.email], **kwargs)
+    def send_confirmation_email(self,
+                                subject='Подтверждение аккаунта ocenika.com',
+                                message='Перейдите по ссылке чтобы подтвердить ваш акканут',
+                                **kwargs):
+        send_mail(subject,
+                  message,
+                  settings.FROM_EMAIL,
+                  [self.email],
+                  html_message="<a href='ocenika.com'> Ocenika test </h4>",
+                  **kwargs)

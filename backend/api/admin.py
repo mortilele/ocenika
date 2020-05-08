@@ -26,4 +26,4 @@ class UniversityAdmin(admin.ModelAdmin):
 
 @admin.register(RatingApplication)
 class RatingApplicationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'status', 'review')
+    list_display = ('id', 'user', 'is_viewed', 'review')
