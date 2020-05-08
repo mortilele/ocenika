@@ -2,124 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98c1e34c-7a2f-4b9f-830e-b5eeffe7e81f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/scripts.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/4.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/5.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/6.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/a.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/ads.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/app-store.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/b-1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/b-2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/b-3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/b-4.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/b-5.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/b-6.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/b.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/blog-post-img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/c-1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/c-2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/c-3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/c.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/course-author.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/courses-header.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/d.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/e.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/event-1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/event-2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/event-3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/foot-logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/g.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/h.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/hero-bg.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/i.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/instructor.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/j.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/k.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/l.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/logo-1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/logo-2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/logo-3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/logo-4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/logo-5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/m.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/n.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/o.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/play-store.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/quote-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/quote.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/single-course-featured-img.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/single-courses-bg.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/single-post.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/t-1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/t-2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/t-3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/t-4.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/team-1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/team-2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/team-3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/team-4.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/user-1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/user-2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/user-3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/video-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/images/video-screenshot.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/js/custom.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/js/jquery.collapsible.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/js/jquery.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/js/masonry.pkgd.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/js/swiper.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/js/swiper.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/css/bootstrap.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/css/bootstrap.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/css/elegant-fonts.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/css/font-awesome.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/css/font-awesome.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/css/swiper.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/css/swiper.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/css/themify-icons.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/ElegantIcons.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/ElegantIcons.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/ElegantIcons.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/ElegantIcons.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/FontAwesome.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/fontawesome-webfont.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/fontawesome-webfont.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/fontawesome-webfont.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/fontawesome-webfont.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/fontawesome-webfont.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/themify.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/themify.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/themify.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/fonts/themify.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/backend/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backend/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/utils/cloud_payments.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/utils/cloud_payments.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/banner/banner.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/banner/banner.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/banner/banner.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/banner/banner.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/header/header.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/header/header.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/header/header.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="ocenika.com" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -128,7 +18,6 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
@@ -190,11 +79,13 @@
       <workItem from="1585024149909" duration="632000" />
       <workItem from="1585025363191" duration="3458000" />
       <workItem from="1585325696551" duration="5425000" />
+      <workItem from="1588758400707" duration="10000" />
+      <workItem from="1588954137199" duration="7000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
     <state x="555" y="191" width="800" height="684" key="#Notifications" timestamp="1584519943644">
@@ -209,10 +100,10 @@
       <screen x="0" y="27" width="1920" height="1005" />
     </state>
     <state x="665" y="334" width="580" height="397" key="#com.intellij.fileTypes.FileTypeChooser/0.27.1920.1005@0.27.1920.1005" timestamp="1584463414580" />
-    <state x="743" y="287" width="424" height="491" key="FileChooserDialogImpl" timestamp="1585335444996">
+    <state x="743" y="287" width="424" height="491" key="FileChooserDialogImpl" timestamp="1588954143300">
       <screen x="0" y="27" width="1920" height="1005" />
     </state>
-    <state x="743" y="287" width="424" height="491" key="FileChooserDialogImpl/0.27.1920.1005@0.27.1920.1005" timestamp="1585335444996" />
+    <state x="743" y="287" width="424" height="491" key="FileChooserDialogImpl/0.27.1920.1005@0.27.1920.1005" timestamp="1588954143300" />
     <state x="449" y="164" width="1022" height="737" key="SettingsEditor" timestamp="1584692171933">
       <screen x="0" y="27" width="1920" height="1005" />
     </state>
