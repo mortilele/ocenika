@@ -6,7 +6,7 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
-    url(r'^login/', views.obtain_auth_token)
+    url(r'^login/', views.obtain_auth_token),
 ]
 
 urlpatterns += router.urls

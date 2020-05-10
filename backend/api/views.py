@@ -1,4 +1,10 @@
+from django.shortcuts import render
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from rest_framework.authtoken.models import Token
+
 from utils import constants
+from utils.permissions import IsAuthenticatedAndActive
 from .models import University, Professor, ProfessorReview
 from api import serializers
 from rest_framework import mixins, viewsets
@@ -7,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
-from django.contrib.auth.models import User
+from authe.models import User
 
 
 from django.http import JsonResponse
@@ -43,7 +49,7 @@ class ProfessorReviewViewSet(mixins.CreateModelMixin,
     serializer_class = serializers.ProfessorReviewSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['professor', ]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedAndActive]
 
     def get_permissions(self):
         if self.action in ['total_ratings', 'last_ratings']:
@@ -99,3 +105,8 @@ def count_metrics(request):
     })
 
 
+def test(request):
+    user = User.objects.get(id=3)
+    uuid = urlsafe_base64_encode(force_bytes(user.id)).decode()
+    token, _ = Token.objects.get_or_create(user=user)
+    return render(request, 'emails/send_email.html', {'uuid': uuid, 'token': token.key})

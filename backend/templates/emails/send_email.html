@@ -1,0 +1,38 @@
+{% autoescape off %}
+<style>
+    #send {
+        text-align: center;
+        font-size: 16px;
+        color: red;
+    }
+</style>
+<body>
+    <div>
+        <a id="send"> Confirm email test </a>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+    <script>
+        $(document).ready(function () {
+          $("#send").click(function (event) {
+            event.preventDefault();
+            $.ajax({
+              type: "POST",
+                beforeSend: function(request) {
+                  request.setRequestHeader("Authorization", 'Token {{token}}');
+                  },
+              url: "/auth/users/confirm_user/",
+              data: {
+                'uuid': '{{uuid}}'
+              },
+              success: function () {
+                  location.href = "https://ocenika.com"
+              }
+            });
+            return false;
+          });
+        });
+    </script>
+</body>
+{% endautoescape %}

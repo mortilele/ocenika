@@ -5,9 +5,16 @@ from django.db import models
 from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import ugettext_lazy as _
+from django.template.loader import render_to_string
+
+from rest_framework.authtoken.models import Token
+
 from .managers import UserManager
 
+from utils.file_upload import transcript_path
 from api.models import University
 
 
@@ -17,7 +24,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     objects = UserManager()
-    is_active = models.BooleanField(default=True, verbose_name='Активность')
+    is_active = models.BooleanField(default=False, verbose_name='Активность')
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False, verbose_name='Сотрудник')
     university = models.ForeignKey(University,
@@ -28,6 +35,10 @@ class User(AbstractBaseUser, PermissionsMixin):
                                    null=True)
     phone = models.CharField(max_length=20,
                              verbose_name='Номер телефона')
+    transcript = models.FileField(verbose_name='Транскрипт',
+                                  upload_to=transcript_path,
+                                  blank=True,
+                                  null=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -46,9 +57,12 @@ class User(AbstractBaseUser, PermissionsMixin):
                                 subject='Подтверждение аккаунта ocenika.com',
                                 message='Перейдите по ссылке чтобы подтвердить ваш акканут',
                                 **kwargs):
+        user = User.objects.get(id=3)
+        uuid = urlsafe_base64_encode(force_bytes(user.id)).decode()
+        token, _ = Token.objects.get_or_create(user=user)
         send_mail(subject,
                   message,
                   settings.FROM_EMAIL,
                   [self.email],
-                  html_message="<a href='ocenika.com'> Ocenika test </h4>",
+                  html_message=render_to_string('emails/send_email.html',{'uuid': uuid, 'token': token.key}),
                   **kwargs)
