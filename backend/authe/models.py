@@ -24,8 +24,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     objects = UserManager()
-    is_active = models.BooleanField(default=False, verbose_name='Активность')
-    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True, verbose_name='Активность')
+    is_confirmed = models.BooleanField(default=False, verbose_name='Подтвердил email')
     is_staff = models.BooleanField(default=False, verbose_name='Сотрудник')
     university = models.ForeignKey(University,
                                    on_delete=models.DO_NOTHING,
@@ -57,12 +57,15 @@ class User(AbstractBaseUser, PermissionsMixin):
                                 subject='Подтверждение аккаунта ocenika.com',
                                 message='Перейдите по ссылке чтобы подтвердить ваш акканут',
                                 **kwargs):
-        user = User.objects.get(id=3)
-        uuid = urlsafe_base64_encode(force_bytes(user.id)).decode()
-        token, _ = Token.objects.get_or_create(user=user)
+        print('in_sending_email')
+        token = Token.objects.get(user_id=self.id)
+
         send_mail(subject,
                   message,
                   settings.FROM_EMAIL,
                   [self.email],
-                  html_message=render_to_string('emails/send_email.html',{'uuid': uuid, 'token': token.key}),
+                  html_message=render_to_string('emails/send_email.html',
+                                                {'base_url': settings.BACKEND_URL,
+                                                 'user_id': self.id,
+                                                 'token': token.key}),
                   **kwargs)

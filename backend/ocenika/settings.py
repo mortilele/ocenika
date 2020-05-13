@@ -163,3 +163,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 FROM_EMAIL = 'ali.mars.99@gmail.com'
 EMAIL_USE_TLS = True
+
+BACKEND_URL = "http://localhost:8000/"

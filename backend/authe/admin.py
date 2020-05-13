@@ -19,8 +19,19 @@ class UserAdmin(UserAdmin):
                 'first_name',
                 'last_name',
                 'university',
-                'password')
+                'password',
+                'transcript',
+            )
         }),
+        ('Permissions', {
+            'fields': (
+                'is_superuser',
+                'is_active',
+                'is_staff',
+                'is_confirmed',
+
+            )
+        })
     )
 
     ordering = ('id',)

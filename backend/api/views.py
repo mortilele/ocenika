@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -19,18 +20,14 @@ from authe.models import User
 from django.http import JsonResponse
 
 
-class UniversityViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
+class UniversityViewSet(mixins.RetrieveModelMixin,
                         mixins.ListModelMixin,
                         viewsets.GenericViewSet):
     queryset = University.objects.all()
     serializer_class = serializers.UniversityFullSerializer
 
 
-class ProfessorViewSet(mixins.CreateModelMixin,
-                       mixins.RetrieveModelMixin,
-                       mixins.UpdateModelMixin,
+class ProfessorViewSet(mixins.RetrieveModelMixin,
                        mixins.ListModelMixin,
                        viewsets.GenericViewSet):
     queryset = Professor.objects.all()
@@ -52,10 +49,10 @@ class ProfessorReviewViewSet(mixins.CreateModelMixin,
     permission_classes = [IsAuthenticatedAndActive]
 
     def get_permissions(self):
-        if self.action in ['total_ratings', 'last_ratings']:
+        if self.action in ['total_ratings', 'last_ratings', 'create']:
             self.permission_classes = [AllowAny, ]
         else:
-            self.permission_classes = [IsAuthenticated, ]
+            self.permission_classes = [IsAuthenticatedAndActive, ]
         return super().get_permissions()
 
     def create(self, request, *args, **kwargs):
@@ -106,7 +103,10 @@ def count_metrics(request):
 
 
 def test(request):
-    user = User.objects.get(id=3)
-    uuid = urlsafe_base64_encode(force_bytes(user.id)).decode()
-    token, _ = Token.objects.get_or_create(user=user)
-    return render(request, 'emails/send_email.html', {'uuid': uuid, 'token': token.key})
+    user_id = request.GET.get('user_id', 2)
+    user = User.objects.get(id=user_id)
+    token = Token.objects.get(user_id=user_id)
+    return render(request, 'emails/send_email.html', {'base_url': settings.BACKEND_URL,
+                                                      'user_id': user.id,
+                                                      'token': token.key,
+                                                      })

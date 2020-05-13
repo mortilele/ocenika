@@ -1,3 +1,5 @@
+from dateutil.relativedelta import relativedelta
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from utils.models import IntegerRangeField
 from utils.file_upload import university_path, professor_path
@@ -17,6 +19,9 @@ class University(models.Model):
     description = models.CharField(max_length=1000, blank=True, null=True, verbose_name='Описание')
     logo = models.ImageField(upload_to=university_path, max_length=1000, verbose_name='Лого', null=True,
                              default=constants.NO_IMAGE)
+    rating = models.FloatField(default=0,
+                               blank=True,
+                               null=True)
 
     def __str__(self):
         return self.name
@@ -56,8 +61,9 @@ class Professor(models.Model):
 
     def recalculate_average_rating(self):
         if self.ratings.exists():
-            self.average_rating = self.ratings.aggregate(avg=Avg('value'))['avg']
-            self.rating_count = self.ratings.count()
+            valid_ratings = self.ratings.filter(created_at__gt=timezone.now()-relativedelta(months=6), value__gt=0)
+            self.average_rating = valid_ratings(avg=Avg('value'))['avg']
+            self.rating_count = valid_ratings.count()
             self.save()
 
 
@@ -76,15 +82,20 @@ class ProfessorReviewManager(models.Manager):
 
 class ProfessorReview(models.Model):
     class Meta:
-        verbose_name = 'Оценка преподавателя'
-        verbose_name_plural = 'Оценки преподавателя'
+        verbose_name = 'Отзыв преподавателю'
+        verbose_name_plural = 'Отзывы преподавателю'
         ordering = ['-created_at']
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.DO_NOTHING,
                              related_name='professor_reviews')
     review = models.TextField(verbose_name='Отзыв')
-    value = IntegerRangeField(min_value=0, max_value=5, default=0, blank=True)
+    value = models.PositiveSmallIntegerField(default=0,
+                                             blank=True,
+                                             validators=[
+                                                 MinValueValidator(0),
+                                                 MaxValueValidator(5)
+                                             ])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     professor = models.ForeignKey(Professor,

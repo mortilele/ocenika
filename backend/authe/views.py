@@ -1,6 +1,7 @@
 import json
 
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.views.decorators.csrf import csrf_exempt
@@ -67,12 +68,14 @@ obtain_auth_token = ObtainAuthToken.as_view()
 
 class UserViewSet(viewsets.GenericViewSet,
                   mixins.CreateModelMixin,
-                  mixins.ListModelMixin):
+                  mixins.ListModelMixin,
+                  mixins.RetrieveModelMixin):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
 
     def get_permissions(self):
-        if self.action in ['create']:
+        if self.action in ['create', 'confirm']:
             self.permission_classes = [permissions.AllowAny, ]
         else:
             self.permission_classes = [permissions.IsAuthenticated]
@@ -83,13 +86,15 @@ class UserViewSet(viewsets.GenericViewSet,
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-    @action(detail=False, methods=['post'])
-    def confirm_user(self, request):
-        uuid = self.request.data.get('uuid')
-        id = force_text(urlsafe_base64_decode(uuid))
-        user = User.objects.get(id=id)
-        user.is_active = True
-        user.save()
-        print(user)
-        return Response()
+    @action(detail=True, methods=['get'])
+    def confirm(self, request, *args, **kwargs):
+        token = self.request.query_params.get('token', None)
+        if token:
+            user = self.get_object()
+            if token == Token.objects.get(user_id=user.id).key:
+                user.is_confirmed = True
+                user.save()
+        return redirect('https://ocenika.com')
 
+    def retrieve(self, request, *args, **kwargs):
+        return Response()

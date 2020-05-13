@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from api.models import University, Professor, ProfessorReview, Subject
-from utils import constants
+from authe.models import User
+from utils import constants, string_utils
 from rest_framework import status
 
 
@@ -17,6 +18,8 @@ class UniversitySerializer(serializers.ModelSerializer):
 
 
 class ProfessorReviewSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=False, default=None)
+
     class Meta:
         model = ProfessorReview
         exclude = ('updated_at', 'user')
@@ -30,13 +33,35 @@ class ProfessorReviewSerializer(serializers.ModelSerializer):
         return output
 
     def complete(self):
-        professor = self.validated_data['professor']
+        CONFIRM_USER = 'Пожалуйста подтвердите ваш аккаунт '
+        CONFIRMATION_SEND = 'Мы отправили вам на почту ваши кредентиалы'
+        message = None
         user = self.context['request'].user
-        # if ProfessorReview.objects.last_review_in_week(user, professor):
-        #     return constants.REVIEW_ALREADY_SUBMITTED, status.HTTP_400_BAD_REQUEST
+        if user and user.is_authenticated:
+            if not user.is_confirmed:
+                message = CONFIRM_USER
+        else:
+            email = self.validated_data['email']
+            if email:
+                try:
+                    user = User.objects.get(email=email)
+                    if user and not user.is_confirmed:
+                        message = CONFIRM_USER
+                except Exception as e:
+                    user = User.objects.create_user(email=email,
+                                                    password=string_utils.generate_password())
+                    message = CONFIRMATION_SEND
+            else:
+                raise User.DoesNotExist
+
+        professor = self.validated_data['professor']
         self.validated_data['user'] = user
+        if ProfessorReview.objects.last_review_in_week(user, professor):
+            return constants.REVIEW_ALREADY_SUBMITTED, status.HTTP_400_BAD_REQUEST
+
         rating = ProfessorReview.objects.create(**self.validated_data)
         serializer = ProfessorReviewSerializer(instance=rating)
+        serializer.data['message'] = message
         return serializer.data, status.HTTP_201_CREATED
 
 
