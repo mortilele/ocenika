@@ -6,8 +6,8 @@ import {Router} from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  LOGINURL = 'https://api.ocenika.com/auth/login/';
-  PROFILEURL = 'https://api.ocenika.com/auth/users/';
+  LOGINURL = 'http://localhost:8000/auth/login/';
+  PROFILEURL = 'http://localhost:8000/auth/users/';
   constructor(
     private http: HttpClient,
     private router: Router
@@ -17,8 +17,8 @@ export class AuthService {
     return this.http.post(this.PROFILEURL, user);
   }
 
-  loginUser(username, password) {
-    return this.http.post(this.LOGINURL, {username, password});
+  loginUser(email, password) {
+    return this.http.post(this.LOGINURL, {email, password});
   }
 
   loggedIn() {

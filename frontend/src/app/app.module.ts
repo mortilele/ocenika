@@ -21,6 +21,10 @@ import {FormsModule} from '@angular/forms';
 import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import {AuthInterceptor} from './auth.interceptor';
+import { LastReviewsComponent } from './last-reviews/last-reviews.component';
+import { PopupComponent } from './popup/popup.component';
+import {LastReviewsResolve} from './last-reviews.resolve';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +43,10 @@ import {AuthInterceptor} from './auth.interceptor';
     SubHeaderComponent,
     ProfessorDetailComponent,
     LogInComponent,
-    SignUpComponent
+    SignUpComponent,
+    LastReviewsComponent,
+    PopupComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +59,8 @@ import {AuthInterceptor} from './auth.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    LastReviewsResolve
   ],
   bootstrap: [AppComponent]
 })

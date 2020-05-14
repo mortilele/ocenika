@@ -1,0 +1,29 @@
+<section class="featured-reviews vertical-column courses-wrap">
+  <div class="container">
+    <div class="row mx-m-25">
+      <div class="col-12 px-25">
+        <header class="heading flex flex-wrap justify-content-between align-items-center">
+          <h2 class="entry-title">Новые отзывы</h2>
+        </header><!-- .heading -->
+      </div><!-- .col -->
+      <div class="container">
+
+        <div class="slideshow-container">
+          <div *ngFor="let review of reviews" class="mySlides">
+            <q>{{review.review}}</q>
+            <p class="author">{{review.professor.full_name}}</p>
+          </div>
+
+          <a class="prev" (click)="plusSlides(-1)">❮</a>
+          <a class="next" (click)="plusSlides(1)">❯</a>
+
+        </div>
+
+        <div class="dot-container">
+          <span *ngFor="let i of reviews; let index = index" class="dot" (click)="currentSlide(index+1)"></span>
+        </div>
+
+      </div>
+    </div><!-- .row -->
+  </div><!-- .container -->
+</section><!-- .courses-wrap -->

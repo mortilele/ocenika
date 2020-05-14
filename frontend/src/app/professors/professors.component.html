@@ -1,29 +1,29 @@
-<app-header></app-header>
+<app-header [current]="'professors'"></app-header>
 <app-sub-header [title]="'Преподаватели'" [url]="'/professors'"></app-sub-header>
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-8">
-      <div class="pagination flex flex-wrap justify-content-between align-items-center">
-        <div class="col-12 col-lg-4 order-2 order-lg-1 mt-3 mt-lg-0">
-          <ul class="flex flex-wrap align-items-center order-2 order-lg-1 p-0 m-0">
-            <li><a (click)="prev()">«</a></li>
-            <li><a (click)="next()">»</a></li>
-          </ul>
-        </div>
+<!--      <div class="pagination flex flex-wrap justify-content-between align-items-center">-->
+<!--        <div class="col-12 col-lg-4 order-2 order-lg-1 mt-3 mt-lg-0">-->
+<!--          <ul class="flex flex-wrap align-items-center order-2 order-lg-1 p-0 m-0">-->
+<!--            <li><a (click)="prev()">«</a></li>-->
+<!--            <li><a (click)="next()">»</a></li>-->
+<!--          </ul>-->
+<!--        </div>-->
 
-        <div class="col-12 flex justify-content-start justify-content-lg-end col-lg-8 order-1 order-lg-2">
-          <div class="pagination-results flex flex-wrap align-items-center">
-            <p class="m-0">Showing {{offset}}–{{limit}} of {{allProfessors.length}} results</p>
+<!--        <div class="col-12 flex justify-content-start justify-content-lg-end col-lg-8 order-1 order-lg-2">-->
+<!--          <div class="pagination-results flex flex-wrap align-items-center">-->
+<!--            <p class="m-0">Showing {{offset}}–{{limit}} of {{allProfessors.length}} results</p>-->
 
-              <select [(ngModel)]="limit">
-                <option value="6">Показать: 06</option>
-                <option value="12">Показать: 12</option>
-                <option value="18">Показать: 18</option>
-                <option value="24">Показать: 24</option>
-              </select>
-          </div><!-- .pagination-results -->
-        </div>
-      </div><!-- .pagination -->
+<!--              <select [(ngModel)]="limit">-->
+<!--                <option value="6">Показать: 06</option>-->
+<!--                <option value="12">Показать: 12</option>-->
+<!--                <option value="18">Показать: 18</option>-->
+<!--                <option value="24">Показать: 24</option>-->
+<!--              </select>-->
+<!--          </div>&lt;!&ndash; .pagination-results &ndash;&gt;-->
+<!--        </div>-->
+<!--      </div>&lt;!&ndash; .pagination &ndash;&gt;-->
       <div class="featured-courses courses-wrap">
         <div class="row mx-m-25">
           <div class="entry-content professor-card" *ngFor="let professor of professors">
@@ -31,33 +31,33 @@
             <div class="professor-card-content">
               <h3><a [routerLink]="['/professors', professor.id]">{{professor.full_name}}</a></h3>
               <h6>{{toStringJoin(professor.universities)}} <span *ngIf="professor.subjects.length"> Предметы: {{toStringJoin(professor.subjects)}}</span></h6>
-              <h5><span> {{professor.rating_count}}</span> отзывов</h5>
+              <h5><span> Отзывов: {{professor.rating_count}}</span> </h5>
             </div>
         </div><!-- .entry-content -->
       </div><!-- .col -->
     </div><!-- .row -->
 
-      <div class="pagination flex flex-wrap justify-content-between align-items-center">
-        <div class="col-12 col-lg-4 order-2 order-lg-1 mt-3 mt-lg-0">
-          <ul class="flex flex-wrap align-items-center order-2 order-lg-1 p-0 m-0">
-            <li><a (click)="prev()">«</a></li>
-            <li><a (click)="next()">»</a></li>
-          </ul>
-        </div>
+<!--      <div class="pagination flex flex-wrap justify-content-between align-items-center">-->
+<!--        <div class="col-12 col-lg-4 order-2 order-lg-1 mt-3 mt-lg-0">-->
+<!--          <ul class="flex flex-wrap align-items-center order-2 order-lg-1 p-0 m-0">-->
+<!--            <li><a (click)="prev()">«</a></li>-->
+<!--            <li><a (click)="next()">»</a></li>-->
+<!--          </ul>-->
+<!--        </div>-->
 
-        <div class="col-12 flex justify-content-start justify-content-lg-end col-lg-8 order-1 order-lg-2">
-          <div class="pagination-results flex flex-wrap align-items-center">
-            <p class="m-0">Showing {{offset}}–{{limit}} of {{allProfessors.length}} results</p>
+<!--        <div class="col-12 flex justify-content-start justify-content-lg-end col-lg-8 order-1 order-lg-2">-->
+<!--          <div class="pagination-results flex flex-wrap align-items-center">-->
+<!--            <p class="m-0">Showing {{offset}}–{{limit}} of {{allProfessors.length}} results</p>-->
 
-            <select [(ngModel)]="limit">
-              <option value="6">Показать: 06</option>
-              <option value="12">Показать: 12</option>
-              <option value="18">Показать: 18</option>
-              <option value="24">Показать: 24</option>
-            </select>
-          </div><!-- .pagination-results -->
-        </div>
-      </div><!-- .pagination -->
+<!--            <select [(ngModel)]="limit">-->
+<!--              <option value="6">Показать: 06</option>-->
+<!--              <option value="12">Показать: 12</option>-->
+<!--              <option value="18">Показать: 18</option>-->
+<!--              <option value="24">Показать: 24</option>-->
+<!--            </select>-->
+<!--          </div>&lt;!&ndash; .pagination-results &ndash;&gt;-->
+<!--        </div>-->
+<!--      </div>&lt;!&ndash; .pagination &ndash;&gt;-->
     </div><!-- .col -->
 
     <div class="col-12 col-lg-4">

@@ -127,3 +127,46 @@ fieldset, label { margin: 0; padding: 0; }
 .rating > input:checked ~ label:hover,
 .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
 .rating > input:checked ~ label:hover ~ label { color: #FFED85;  }
+
+
+#get_reviews {
+  text-align: center;
+  padding: 12px 28px;
+  margin-top: 20px;
+  border: 1px;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.1rem;
+  outline: none;
+  cursor: pointer;
+  background: #19c880;
+}
+
+#get_reviews:hover {
+  background: transparent;
+  color: #19c880;
+  border: 1px solid #19c880;
+}
+
+
+.select {
+  width: 100%;
+  padding: 0.9rem 0.9rem;
+  margin-top: 20px;
+  border: 1px solid #e5e5e5;
+  line-height: 1;
+  color: #383749;
+  outline: none;
+  background-color: #fff;
+  background-image: none;
+  background-clip: padding-box;
+}
+
+.select:focus {
+border: 1px solid #19c880;
+}

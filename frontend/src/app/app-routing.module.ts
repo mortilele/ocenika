@@ -6,10 +6,10 @@ import {MainComponent} from './main/main.component';
 import {ProfessorDetailComponent} from './professor-detail/professor-detail.component';
 import {LogInComponent} from './log-in/log-in.component';
 import {SignUpComponent} from './sign-up/sign-up.component';
-
+import {LastReviewsResolve} from './last-reviews.resolve';
 
 const routes: Routes = [
-  { path: '', component: MainComponent },
+  { path: '', component: MainComponent, resolve: { lastReviews: LastReviewsResolve} },
   { path: 'professors', component: ProfessorsComponent },
   { path: 'professors/:id', component: ProfessorDetailComponent },
   { path: 'login', component: LogInComponent },

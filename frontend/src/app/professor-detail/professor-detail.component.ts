@@ -13,13 +13,14 @@ export class ProfessorDetailComponent implements OnInit {
 
   professor;
   ratings;
+  reviews;
   comment = new Comment();
 
   constructor(
     private route: ActivatedRoute,
     public router: Router,
     private apiService: ApiService,
-    private authService: AuthService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit(): void {
@@ -30,7 +31,11 @@ export class ProfessorDetailComponent implements OnInit {
 
   getProfessor() {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.apiService.getProfessor(id).subscribe(professor => this.professor = professor);
+    this.apiService.getProfessor(id).subscribe(professor => {
+      this.professor = professor;
+      this.reviews = professor.ratings;
+      this.comment.subject = professor.subjects[0].name;
+    });
   }
 
   getProfessorRatingFilter() {
@@ -39,16 +44,17 @@ export class ProfessorDetailComponent implements OnInit {
   }
 
   addComment(): void {
-    if (this.authService.loggedIn()) {
-      this.comment.professor = this.professor.id;
-      this.apiService.addComment(this.comment)
-        .subscribe( comment => {
-          this.professor.ratings.push(comment);
-          this.getProfessorRatingFilter();
-          console.log(comment.value);
-        });
-    }
-    else alert('Вам нужно войти')
+    this.comment.professor = this.professor.id;
+    this.apiService.addComment(this.comment)
+      .subscribe(
+        comment => {
+        this.getProfessorRatingFilter();
+        alert(comment.moderator_message);
+      },
+        error => {
+          alert(error.error);
+        }
+      );
   }
 
   statsReviews(total, value) {
@@ -75,6 +81,15 @@ export class ProfessorDetailComponent implements OnInit {
           },
           error => console.log(error)
         );
+    }
+  }
+
+  getAllReviews() {
+    if (this.authService.loggedIn()) {
+      this.apiService.getProfessorRatings(this.professor.id).subscribe(reviews => this.reviews = reviews);
+      document.getElementById('get_reviews').style.display = 'none';
+    } else {
+      alert('Зарегистро чтобы видеть все отзывы');
     }
   }
 

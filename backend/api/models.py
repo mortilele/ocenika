@@ -26,6 +26,10 @@ class University(models.Model):
     def __str__(self):
         return self.name
 
+    def recalculate_rating(self):
+        self.rating = self.professor_set.aggregate(avg=Avg('average_rating'))['avg']
+        self.save()
+
     def save(self, *args, **kwargs):
         if not self.abbreviation:
             if len(self.name.split()) != 1:
@@ -61,10 +65,45 @@ class Professor(models.Model):
 
     def recalculate_average_rating(self):
         if self.ratings.exists():
-            valid_ratings = self.ratings.filter(created_at__gt=timezone.now()-relativedelta(months=6), value__gt=0)
-            self.average_rating = valid_ratings(avg=Avg('value'))['avg']
-            self.rating_count = valid_ratings.count()
-            self.save()
+            print('here2')
+            valid_ratings = self.ratings.filter(created_at__gte=timezone.now()-relativedelta(months=6),
+                                                status=constants.ACCEPTED)
+            if valid_ratings:
+                print('here3')
+                valued_ratings = valid_ratings.filter(value__gte=1)
+                if valued_ratings:
+                    self.average_rating = valued_ratings.aggregate(avg=Avg('value'))['avg']
+                self.rating_count = valid_ratings.count()
+                self.save()
+                for university in self.universities.all():
+                    university.recalculate_rating()
+
+
+class Subject(models.Model):
+    class Meta:
+        verbose_name = 'Предмет'
+        verbose_name_plural = 'Предметы'
+
+    name = models.CharField(max_length=300, verbose_name='Название предмета')
+    abbreviation = models.CharField(max_length=300, verbose_name='Аббревиатура', blank=True, null=True)
+    professors = models.ManyToManyField(Professor,
+                                        related_name='subjects',
+                                        verbose_name='Преподаватели этого предмета',
+                                        blank=True)
+    university = models.ManyToManyField(University,
+                                        related_name='subjects',
+                                        blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.abbreviation:
+            if len(self.name.split()) != 1:
+                self.abbreviation = "".join(w[0].upper() for w in self.name.split())
+            else:
+                self.abbreviation = self.name
+        super(Subject, self).save(*args, **kwargs)
 
 
 class ProfessorReviewManager(models.Manager):
@@ -106,6 +145,12 @@ class ProfessorReview(models.Model):
                               max_length=100,
                               choices=constants.REVIEW_STATUSES,
                               default=constants.ON_MODERATION)
+    subject = models.ForeignKey(Subject,
+                                on_delete=models.DO_NOTHING,
+                                blank=True,
+                                null=True)
+    moderator_message = models.CharField(max_length=100,
+                                         default='')
     objects = ProfessorReviewManager()
 
     def save(self, *args, **kwargs):
@@ -114,33 +159,6 @@ class ProfessorReview(models.Model):
 
     def __str__(self):
         return f'{self.professor} {self.status}'
-
-
-class Subject(models.Model):
-    class Meta:
-        verbose_name = 'Предмет'
-        verbose_name_plural = 'Предметы'
-
-    name = models.CharField(max_length=300, verbose_name='Название предмета')
-    abbreviation = models.CharField(max_length=300, verbose_name='Аббревиатура', blank=True, null=True)
-    professors = models.ManyToManyField(Professor,
-                                        related_name='subjects',
-                                        verbose_name='Преподаватели этого предмета',
-                                        blank=True)
-    university = models.ManyToManyField(University,
-                                        related_name='subjects',
-                                        blank=True)
-
-    def __str__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.abbreviation:
-            if len(self.name.split()) != 1:
-                self.abbreviation = "".join(w[0].upper() for w in self.name.split())
-            else:
-                self.abbreviation = self.name
-        super(Subject, self).save(*args, **kwargs)
 
 
 class RatingApplication(models.Model):

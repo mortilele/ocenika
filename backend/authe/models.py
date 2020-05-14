@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 
 from rest_framework.authtoken.models import Token
 
+from utils.email_worker import EmailThread
 from .managers import UserManager
 
 from utils.file_upload import transcript_path
@@ -59,13 +60,4 @@ class User(AbstractBaseUser, PermissionsMixin):
                                 **kwargs):
         print('in_sending_email')
         token = Token.objects.get(user_id=self.id)
-
-        send_mail(subject,
-                  message,
-                  settings.FROM_EMAIL,
-                  [self.email],
-                  html_message=render_to_string('emails/send_email.html',
-                                                {'base_url': settings.BACKEND_URL,
-                                                 'user_id': self.id,
-                                                 'token': token.key}),
-                  **kwargs)
+        EmailThread(subject, self.email, token.key, self.id, message, kwargs).start()

@@ -11,7 +11,7 @@ import {University} from './university';
 })
 export class ApiService {
 
-  baseUrl = 'https://api.ocenika.com';
+  baseUrl = 'http://localhost:8000';
   httpHeaders = new HttpHeaders(
     {'Content-Type': 'application/json'}
   );
@@ -44,10 +44,7 @@ export class ApiService {
   }
 
   addComment(comment: Comment): Observable<any> {
-    return this.http.post(this.baseUrl + '/api/ratings/', comment, this.httpOptions)
-      .pipe(tap((newComment: Comment) => console.log('added comment')),
-      catchError(this.handleError<any>('add here'))
-      );
+    return this.http.post(this.baseUrl + '/api/ratings/', comment, this.httpOptions);
   }
 
   getProfessorRatingCount(id): Observable<any> {
@@ -60,6 +57,14 @@ export class ApiService {
 
   getProfessorByName(name): Observable<any> {
     return this.http.get(this.baseUrl + '/api/professors/', {params: {search: name}, headers: this.httpHeaders});
+  }
+
+  getProfessorRatings(professorId) {
+    return this.http.get(this.baseUrl + '/api/ratings/', {params: {professor: professorId}, headers: this.httpHeaders});
+  }
+
+  getLastReviews() {
+    return this.http.get(this.baseUrl + '/api/ratings/last_ratings/');
   }
 
 

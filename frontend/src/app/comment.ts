@@ -3,6 +3,7 @@ export class Comment {
   review: string;
   value: number;
   professor: number;
+  subject: number;
 
   constructor() {
   }

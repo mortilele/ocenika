@@ -1,5 +1,7 @@
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.shortcuts import render
+from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from rest_framework.authtoken.models import Token
@@ -15,7 +17,6 @@ from rest_framework.decorators import action
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from authe.models import User
-
 
 from django.http import JsonResponse
 
@@ -33,7 +34,8 @@ class ProfessorViewSet(mixins.RetrieveModelMixin,
     queryset = Professor.objects.all()
     serializer_class = serializers.ProfessorSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['full_name', 'subjects__name', 'subjects__abbreviation', 'universities__name', 'universities__abbreviation']
+    search_fields = ['full_name', 'subjects__name', 'subjects__abbreviation', 'universities__name',
+                     'universities__abbreviation']
     filterset_fields = ['universities', ]
     ordering_fields = ['last_name', 'full_name']
     ordering = ['last_name']
@@ -42,7 +44,8 @@ class ProfessorViewSet(mixins.RetrieveModelMixin,
 class ProfessorReviewViewSet(mixins.CreateModelMixin,
                              mixins.ListModelMixin,
                              viewsets.GenericViewSet):
-    queryset = ProfessorReview.objects.filter(status=constants.ACCEPTED)
+    queryset = ProfessorReview.objects.filter(status=constants.ACCEPTED,
+                                              created_at__gte=timezone.now() - relativedelta(months=6))
     serializer_class = serializers.ProfessorReviewSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['professor', ]
@@ -65,12 +68,21 @@ class ProfessorReviewViewSet(mixins.CreateModelMixin,
     def total_ratings(self, request):
         professor_id = self.request.query_params['professor_id']
         professor_ratings = ProfessorReview.objects.filter(professor_id=professor_id)
-        ones = professor_ratings.filter(value=1).count()
-        twos = professor_ratings.filter(value=2).count()
-        threes = professor_ratings.filter(value=3).count()
-        fours = professor_ratings.filter(value=4).count()
-        fives = professor_ratings.filter(value=5).count()
-        total = professor_ratings.count()
+        ones = professor_ratings.filter(value=1,
+                                        status=constants.ACCEPTED,
+                                        created_at__gte=timezone.now() - relativedelta(months=6)).count()
+        twos = professor_ratings.filter(value=2, status=constants.ACCEPTED,
+                                        created_at__gte=timezone.now() - relativedelta(months=6)).count()
+        threes = professor_ratings.filter(value=3, status=constants.ACCEPTED,
+                                          created_at__gte=timezone.now() - relativedelta(months=6)).count()
+        fours = professor_ratings.filter(value=4, status=constants.ACCEPTED,
+                                         created_at__gte=timezone.now() - relativedelta(months=6)).count()
+        fives = professor_ratings.filter(value=5, status=constants.ACCEPTED,
+                                         created_at__gte=timezone.now() - relativedelta(months=6)).count()
+        total = professor_ratings.filter(status=constants.ACCEPTED,
+                                         value__gt=0,
+                                         value__lte=5,
+                                         created_at__gte=timezone.now() - relativedelta(months=6)).count()
         average = round((ones * 1 + twos * 2 + threes * 3 + fours * 4 + fives * 5) / total) if total else 0
         return JsonResponse({
             'ones': ones,
@@ -84,7 +96,9 @@ class ProfessorReviewViewSet(mixins.CreateModelMixin,
 
     @action(detail=False, methods=['get'])
     def last_ratings(self, request):
-        last_ratings = ProfessorReview.objects.filter(status=constants.ACTIVE).order_by('-created_at')[:10]
+        last_ratings = ProfessorReview.objects.filter(status=constants.ACCEPTED,
+                                                      created_at__gte=timezone.now() - relativedelta(months=6)
+                                                      ).order_by('-created_at')[:10]
         return Response(serializers.ProfessorReviewSerializer(last_ratings, many=True).data)
 
 

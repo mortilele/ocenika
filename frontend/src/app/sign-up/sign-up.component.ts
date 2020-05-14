@@ -13,6 +13,9 @@ export class SignUpComponent implements OnInit {
   password = '';
   firstName = '';
   lastName = '';
+  file;
+  university;
+  phone;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -27,7 +30,10 @@ export class SignUpComponent implements OnInit {
       email: this.email,
       password: this.password,
       first_name: this.firstName,
-      last_name: this.lastName
+      last_name: this.lastName,
+      transcript: this.file,
+      phone: this.phone,
+      university: this.university
     };
     console.log(registerUserData);
     this.authService.registerUser(registerUserData)
@@ -37,6 +43,11 @@ export class SignUpComponent implements OnInit {
         },
         error => console.log(error)
       );
+  }
+
+  onFileChange(event) {
+    this.file = event.target.files[0];
+    console.log(event);
   }
 
 }
