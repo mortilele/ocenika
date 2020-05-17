@@ -9,8 +9,8 @@
                 <h3>Ваш профиль</h3>
                 <label for="fname"><i class="fa fa-user"></i> Имя </label>
                 <input type="text" id="fname" [(ngModel)]="userData.first_name" placeholder="Имя">
-                <label for="adr"><i class="fa fa-address-card-o"></i> Фамилия </label>
-                <input type="text" id="adr" [(ngModel)]="userData.last_name" placeholder="Фамилия">
+                <label for="lname"><i class="fa fa-address-card-o"></i> Фамилия </label>
+                <input type="text" id="lname" [(ngModel)]="userData.last_name" placeholder="Фамилия">
                 <label for="email"><i class="fa fa-envelope"></i> Email</label>
                 <input type="text" id="email" [(ngModel)]="userData.email" placeholder="john@example.com" disabled>
                 <label>
@@ -19,9 +19,9 @@
               </div>
               <div class="col-50">
                 <h3>	&nbsp;</h3>
-                <label for="cname"><i class="fa fa-phone-square"></i> Номер телефона</label>
-                <input type="text" id="cname" [(ngModel)]="userData.phone" placeholder="+777777777">
-                <label for="ccnum"><i class="fa fa-university"></i> Университет</label>
+                <label for="phone"><i class="fa fa-phone-square"></i> Номер телефона</label>
+                <input type="text" id="phone" [(ngModel)]="userData.phone" placeholder="+777777777">
+                <label for="university"><i class="fa fa-university"></i> Университет</label>
                 <select [(ngModel)]="userData.university">
                   <option *ngFor="let university of universities"
                           [selected]="university.id === userData.university"
@@ -30,16 +30,17 @@
                 </select>
                 <div class="row">
                   <div class="col-50">
-                    <label for="expyear"><i class="fa fa-file-code-o"></i> Транскрипт</label>
-                    <input type="file" (change)="onFileChange($event)" placeholder="2018">
+                    <label for="transcript"><i class="fa fa-file-code-o"></i> Транскрипт</label>
+                    <input type="file" (change)="onFileChange($event)">
                   </div>
                   <div class="col-50">
-                    <label for="cvv">Текущий транскрипт</label>
-                    <a class="transcript" (click)="goToLink(userData.transcript)"> Transcript</a>
+                    <label for="current_transcript">Текущий транскрипт</label>
+                    <a *ngIf="userData.transcript" class="transcript" (click)="goToLink(userData.transcript)"> Transcript</a>
+                    <p *ngIf="!userData.transcript" class="transcript">Отсутствует</p>
                   </div>
                 </div>
-                <label for="cname"><i class="fa fa-user-secret"></i> Поменять пароль</label>
-                <input type="password" id="cname" [(ngModel)]="userData.password" placeholder="">
+                <label for="password"><i class="fa fa-user-secret"></i> Поменять пароль</label>
+                <input type="password" id="password" [(ngModel)]="userData.password" placeholder="Новый пароль">
               </div>
 
             </div>

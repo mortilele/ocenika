@@ -7,21 +7,21 @@
     <hr>
 
     <label for="email"><b>Email <span class="required"> * </span></b></label>
-    <input type="email" placeholder="Enter Email" [(ngModel)]="email" required>
+    <input type="email" placeholder="Введите Email" [(ngModel)]="email" required>
 
     <label for="psw"><b>Пароль <span class="required"> * </span> </b></label>
-    <input type="password" placeholder="Enter Password" [(ngModel)]="password" required>
+    <input type="password" placeholder="Введите Пароль" [(ngModel)]="password" required>
 
-    <label for="psw"><b>Имя  <span class="required"> * </span> </b></label>
-    <input type="text" placeholder="Enter Password" [(ngModel)]="firstName" required>
+    <label for="fname"><b>Имя  <span class="required"> * </span> </b></label>
+    <input type="text" placeholder="Введите Имя" [(ngModel)]="firstName" required>
 
-    <label for="psw"><b>Фамилия  <span class="required"> * </span> </b></label>
-    <input type="text" placeholder="Enter Password" [(ngModel)]="lastName" required>
+    <label for="lname"><b>Фамилия  <span class="required"> * </span> </b></label>
+    <input type="text" placeholder="Введите Фамилию" [(ngModel)]="lastName" required>
 
-    <label for="psw"><b>Номер телефона</b></label>
-    <input type="text" placeholder="Enter Password" [(ngModel)]="phone" required>
+    <label for="phone"><b>Номер телефона</b></label>
+    <input type="text" placeholder="Введите Номер телефона" [(ngModel)]="phone" required>
 
-    <label for="psw"><b>Университет  <span class="required"> * </span> </b></label>
+    <label for="university"><b>Университет  <span class="required"> * </span> </b></label>
     <select [(ngModel)]="selectedUniversity">
       <option *ngFor="let university of universities"
               [value]="university.id"
@@ -30,8 +30,8 @@
       </option>
     </select>
 
-    <label for="psw"><b>Транскрипт</b></label>
-    <input (change)="onFileChange($event)" type="file" placeholder="Enter Password" required>
+    <label for="transcript"><b>Транскрипт</b></label>
+    <input (change)="onFileChange($event)" type="file">
 
     <hr>
     <p>Создавая аккаунт, вы соглашаетесь с нашими <a routerLink="/policy">Условиями и Конфиденциальностью</a>.</p>
