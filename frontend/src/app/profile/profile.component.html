@@ -49,5 +49,10 @@
       </div>
     </div>
 
+<app-popup [showModel]="showPopup"
+           (outputToParent)="toggleShowPopup()"
+           [header]="popupHeader"
+           [content]="popupContent">
 
+</app-popup>
 <app-footer></app-footer>

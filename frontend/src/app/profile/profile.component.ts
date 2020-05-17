@@ -12,6 +12,9 @@ export class ProfileComponent implements OnInit {
   fullName;
   transcript;
   universities;
+  showPopup;
+  popupHeader;
+  popupContent;
   constructor(
     private authService: AuthService,
     private apiService: ApiService
@@ -45,6 +48,12 @@ export class ProfileComponent implements OnInit {
     window.open(url, '_blank');
   }
 
+  toggleShowPopup() {
+    this.showPopup = false;
+    this.popupHeader = '';
+    this.popupContent = '';
+  }
+
   updateUserProfile() {
     const formData = new FormData();
     formData.append('email', this.userData.email);
@@ -57,13 +66,19 @@ export class ProfileComponent implements OnInit {
     if (this.transcript) {
       formData.append('transcript', this.transcript);
     }
-    if (this.userData.password) {
+    if (this.userData.password && this.userData.password !== '') {
       formData.append('password', this.userData.password);
     }
     this.authService.updateUserData(this.userData.id, formData)
       .subscribe(
         response => {
-          alert('suces');
+          this.popupHeader = 'Ваши данные успешно обновлены';
+          this.showPopup = true;
+        },
+        error => {
+          this.popupHeader = 'Что-то произошло не по плану';
+          this.popupContent = error.error;
+          this.showPopup = true;
         }
       );
   }

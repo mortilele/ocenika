@@ -157,11 +157,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 AUTH_USER_MODEL = 'authe.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST_USER = 'ali.mars.99@gmail.com'
-EMAIL_HOST_PASSWORD = 'alik_larisa'
+EMAIL_HOST_USER = 'ocenika.com@gmail.com'
+EMAIL_HOST_PASSWORD = 'Ocenika2020'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-FROM_EMAIL = 'ali.mars.99@gmail.com'
+FROM_EMAIL = 'ocenika.com@gmail.com'
 EMAIL_USE_TLS = True
 
 BACKEND_URL = "https://api.ocenika.com"
