@@ -12,6 +12,7 @@ router.register(r'ratings', views.ProfessorReviewViewSet)
 urlpatterns = [
     url(r'metrics', views.count_metrics),
     url(r'test', views.test),
+    url(r'policy', views.policy),
 ]
 
 urlpatterns += router.urls

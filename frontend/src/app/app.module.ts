@@ -25,6 +25,9 @@ import { LastReviewsComponent } from './last-reviews/last-reviews.component';
 import { PopupComponent } from './popup/popup.component';
 import {LastReviewsResolve} from './last-reviews.resolve';
 import { ProfileComponent } from './profile/profile.component';
+import { ConfidentialityComponent } from './confidentiality/confidentiality.component';
+import {PdfViewerModule} from 'ng2-pdf-viewer';
+import {AuthGuard} from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -46,13 +49,15 @@ import { ProfileComponent } from './profile/profile.component';
     SignUpComponent,
     LastReviewsComponent,
     PopupComponent,
-    ProfileComponent
+    ProfileComponent,
+    ConfidentialityComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    PdfViewerModule,
   ],
   providers: [LazyLoadScriptService,
     {
@@ -60,7 +65,8 @@ import { ProfileComponent } from './profile/profile.component';
       useClass: AuthInterceptor,
       multi: true
     },
-    LastReviewsResolve
+    LastReviewsResolve,
+    AuthGuard,
   ],
   bootstrap: [AppComponent]
 })

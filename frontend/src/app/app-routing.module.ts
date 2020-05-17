@@ -7,17 +7,22 @@ import {ProfessorDetailComponent} from './professor-detail/professor-detail.comp
 import {LogInComponent} from './log-in/log-in.component';
 import {SignUpComponent} from './sign-up/sign-up.component';
 import {LastReviewsResolve} from './last-reviews.resolve';
-
+import {ProfileComponent} from './profile/profile.component';
+import {ConfidentialityComponent} from './confidentiality/confidentiality.component';
+import {AuthGuard} from './auth.guard';
+// resolve: { lastReviews: LastReviewsResolve}
 const routes: Routes = [
-  { path: '', component: MainComponent, resolve: { lastReviews: LastReviewsResolve} },
+  { path: '', component: MainComponent},
   { path: 'professors', component: ProfessorsComponent },
   { path: 'professors/:id', component: ProfessorDetailComponent },
   { path: 'login', component: LogInComponent },
   { path: 'register', component: SignUpComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]  },
+  { path: 'policy', component: ConfidentialityComponent},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

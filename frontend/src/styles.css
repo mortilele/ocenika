@@ -2713,3 +2713,17 @@ p.footer-copyright {
 .footer-bar-nav ul li a:hover {
   color: #34d986;
 }
+
+.required {
+  color: red;
+}
+
+a:hover {
+  cursor: pointer;
+  color: #19c880;
+}
+
+
+.logo-title {
+  color: #34d986;
+}

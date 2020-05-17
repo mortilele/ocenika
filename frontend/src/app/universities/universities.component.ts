@@ -9,7 +9,7 @@ import {University} from '../university';
 })
 export class UniversitiesComponent implements OnInit {
 
-  universities: University;
+  universities;
 
   ngOnInit(): void {
     this.getUniversities();

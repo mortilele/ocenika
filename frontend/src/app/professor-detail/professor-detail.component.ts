@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from '../api.service';
 import {Comment} from '../comment';
 import {AuthService} from '../auth.service';
+import {validateEmail} from '../utils';
 
 @Component({
   selector: 'app-professor-detail',
@@ -15,6 +16,9 @@ export class ProfessorDetailComponent implements OnInit {
   ratings;
   reviews;
   comment = new Comment();
+  showPopup = false;
+  popupContent = '';
+  popupHeader = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -34,8 +38,14 @@ export class ProfessorDetailComponent implements OnInit {
     this.apiService.getProfessor(id).subscribe(professor => {
       this.professor = professor;
       this.reviews = professor.ratings;
-      this.comment.subject = professor.subjects[0].name;
+      this.comment.subject = professor.subjects[0].id;
     });
+  }
+
+  toggleShowPopup() {
+    this.showPopup = false;
+    this.popupHeader = '';
+    this.popupContent = '';
   }
 
   getProfessorRatingFilter() {
@@ -45,14 +55,28 @@ export class ProfessorDetailComponent implements OnInit {
 
   addComment(): void {
     this.comment.professor = this.professor.id;
+    if ((this.authService.loggedIn() && !this.comment.review) || (!this.comment.email || !this.comment.review)) {
+      this.popupHeader = 'Пожалуйста заполните все данные!';
+      this.showPopup = true;
+      return;
+    }
+    if (!validateEmail(this.comment.email)) {
+      this.popupHeader = 'Неправильный email';
+      this.showPopup = true;
+      return;
+    }
     this.apiService.addComment(this.comment)
       .subscribe(
         comment => {
         this.getProfessorRatingFilter();
-        alert(comment.moderator_message);
+        this.popupHeader = 'Ваш отзыв успешно отправлен';
+        this.popupContent = comment.moderator_message;
+        this.showPopup = true;
       },
         error => {
-          alert(error.error);
+          this.popupHeader = 'Произошла ошибка';
+          this.popupContent = 'Вы уже оставляли отзыв данному преподавателю';
+          this.showPopup = true;
         }
       );
   }
@@ -89,7 +113,9 @@ export class ProfessorDetailComponent implements OnInit {
       this.apiService.getProfessorRatings(this.professor.id).subscribe(reviews => this.reviews = reviews);
       document.getElementById('get_reviews').style.display = 'none';
     } else {
-      alert('Зарегистро чтобы видеть все отзывы');
+      this.popupHeader = 'Авторизуйтесь';
+      this.popupContent = 'Пожалуйста, зарегистрируйтесь или войдите, чтобы увидеть все отзывы';
+      this.showPopup = true;
     }
   }
 

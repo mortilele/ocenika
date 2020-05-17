@@ -69,6 +69,7 @@ obtain_auth_token = ObtainAuthToken.as_view()
 class UserViewSet(viewsets.GenericViewSet,
                   mixins.CreateModelMixin,
                   mixins.ListModelMixin,
+                  mixins.UpdateModelMixin,
                   mixins.RetrieveModelMixin):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -94,7 +95,4 @@ class UserViewSet(viewsets.GenericViewSet,
             if token == Token.objects.get(user_id=user.id).key:
                 user.is_confirmed = True
                 user.save()
-        return redirect('https://ocenika.com')
-
-    def retrieve(self, request, *args, **kwargs):
-        return Response()
+        return redirect('https://ocenika.com/login')

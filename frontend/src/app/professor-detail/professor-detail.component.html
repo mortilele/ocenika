@@ -99,15 +99,17 @@
     <div class="col-12 col-lg-8">
       <div class="post-comments-wrap">
         <div class="post-comments">
-          <h3 class="comments-title"><span class="comments-number">Отзывов {{reviews.length}}</span></h3>
+          <h3 class="comments-title"><span class="comments-number">Отзывов {{professor.rating_count}}</span></h3>
           <ol class="comment-list">
             <li class="comment" *ngFor="let comment of reviews">
               <article class="comment-body">
                 <div class="comment-wrap">
                   <div class="comment-header">
-                    <span *ngFor="let star of range(comment.value)" class="fa fa-star checked little-star"></span>
-                    <span *ngFor="let missed of range(5-comment.value)" class="fa fa-star little-star"></span>
-                    <span class="posted-date">{{convertDate(comment.created_at) | date: 'longDate'}}</span>
+                    <div *ngIf="comment.value">
+                      <span *ngFor="let star of range(comment.value)" class="fa fa-star checked little-star"></span>
+                      <span *ngFor="let missed of range(5-comment.value)" class="fa fa-star little-star"></span>
+                    </div>
+                    <span [style]="!comment.value && 'margin-left: 0px'" class="posted-date">{{convertDate(comment.created_at) | date: 'longDate'}}</span>
                   </div><!-- .comment-author -->
                   <p>{{comment.review}}</p>
                 </div><!-- .comment-wrap -->
@@ -117,7 +119,8 @@
             </li><!-- .comment -->
 
           </ol><!-- .comment-list -->
-          <button id="get_reviews" (click)="getAllReviews()"> Показать больше</button>
+          <h4 *ngIf="!reviews.length">Станьте первым кто оставить отзыв!</h4>
+          <button id="get_reviews" *ngIf="professor.rating_count > 3" (click)="getAllReviews()"> Показать больше</button>
         </div><!-- .post-comments -->
 
         <div class="comments-form">
@@ -127,7 +130,7 @@
               <div class="row">
                 <div class="col-8">
                   <input *ngIf="!authService.loggedIn()" type="email" placeholder="Email" [(ngModel)]="comment.email"/>
-                  <select [(ngModel)]="comment.subject" class="select">
+                  <select *ngIf="professor.subjects.length" [(ngModel)]="comment.subject" class="select">
                     <option *ngFor="let subject of professor.subjects" value="{{subject.id}}">{{subject.name}}</option>
                   </select>
                 </div>
@@ -150,4 +153,9 @@
     </div>
   </div>
 </div>
+<app-popup [showModel]="showPopup"
+           (outputToParent)="toggleShowPopup()"
+           [header]="popupHeader"
+           [content]="popupContent"
+></app-popup>
 <app-footer></app-footer>

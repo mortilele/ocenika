@@ -2,13 +2,11 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.shortcuts import render
 from django.utils import timezone
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 from rest_framework.authtoken.models import Token
 
 from utils import constants
 from utils.permissions import IsAuthenticatedAndActive
-from .models import University, Professor, ProfessorReview
+from .models import University, Professor, ProfessorReview, PrivacyPolicy
 from api import serializers
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -26,6 +24,9 @@ class UniversityViewSet(mixins.RetrieveModelMixin,
                         viewsets.GenericViewSet):
     queryset = University.objects.all()
     serializer_class = serializers.UniversityFullSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['name']
+    ordering = ['-rating']
 
 
 class ProfessorViewSet(mixins.RetrieveModelMixin,
@@ -46,7 +47,7 @@ class ProfessorReviewViewSet(mixins.CreateModelMixin,
                              viewsets.GenericViewSet):
     queryset = ProfessorReview.objects.filter(status=constants.ACCEPTED,
                                               created_at__gte=timezone.now() - relativedelta(months=6))
-    serializer_class = serializers.ProfessorReviewSerializer
+    serializer_class = serializers.ProfessorReviewListSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['professor', ]
     permission_classes = [IsAuthenticatedAndActive]
@@ -57,6 +58,11 @@ class ProfessorReviewViewSet(mixins.CreateModelMixin,
         else:
             self.permission_classes = [IsAuthenticatedAndActive, ]
         return super().get_permissions()
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return serializers.ProfessorReviewCreateSerializer
+        return self.serializer_class
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -99,7 +105,7 @@ class ProfessorReviewViewSet(mixins.CreateModelMixin,
         last_ratings = ProfessorReview.objects.filter(status=constants.ACCEPTED,
                                                       created_at__gte=timezone.now() - relativedelta(months=6)
                                                       ).order_by('-created_at')[:10]
-        return Response(serializers.ProfessorReviewSerializer(last_ratings, many=True).data)
+        return Response(serializers.ProfessorReviewListSerializer(last_ratings, many=True).data)
 
 
 def count_metrics(request):
@@ -120,7 +126,15 @@ def test(request):
     user_id = request.GET.get('user_id', 2)
     user = User.objects.get(id=user_id)
     token = Token.objects.get(user_id=user_id)
-    return render(request, 'emails/send_email.html', {'base_url': settings.BACKEND_URL,
-                                                      'user_id': user.id,
-                                                      'token': token.key,
-                                                      })
+    return render(request, 'emails/send_confirmation_email.html',
+                  {'base_url': settings.BACKEND_URL,
+                   'email': user.email,
+                   'password': user.raw_password,
+                   'user_id': user.id,
+                   'token': token})
+
+
+def policy(request):
+    serializer = serializers.PrivacyPolicySerializer(instance=PrivacyPolicy.objects.first())
+    policy_url = settings.BACKEND_URL + serializer.data['file']
+    return JsonResponse({'file': policy_url})

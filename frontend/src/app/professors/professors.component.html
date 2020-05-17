@@ -72,8 +72,8 @@
         <div class="cat-links">
           <h2>Университеты</h2>
           <ul class="p-0 m-0" >
-            <li><a (click)="getProfessors()"> Все </a></li>
-            <li *ngFor="let university of universities"><a (click)="getProfessorsByUniversity(university.id)">{{university.name}}</a></li>
+            <li><a [className]="universityId===-1 && 'logo-title'" (click)="getProfessors()"> Все </a></li>
+            <li *ngFor="let university of universities"><a [className]="universityId===university.id && 'logo-title'" (click)="getProfessorsByUniversity(university.id)">{{university.name}}</a></li>
           </ul>
         </div><!-- .cat-links -->
 

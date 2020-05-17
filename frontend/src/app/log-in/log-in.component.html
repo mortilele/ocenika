@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header [current]="'login'"></app-header>
 <app-sub-header [title]='"Войти"' [url]="'/login'"></app-sub-header>
 <div>
   <div class="container">
@@ -6,57 +6,23 @@
     <hr>
 
     <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" [(ngModel)]="email" required>
+    <input type="text" placeholder="Ваш Email"  [(ngModel)]="email" required>
 
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" [(ngModel)]="password" required>
+    <label for="psw"><b>Пароль</b></label>
+    <input type="password" placeholder="Ваш пароль" [(ngModel)]="password" required>
 
     <hr>
     <button (click)="login()" class="registerbtn">Войти</button>
   </div>
 
   <div class="container signin">
-    <p>Нету аккаунта? <a routerLink="/register" > Создать </a>.</p>
+    <p>Нету аккаунта? Не проблема <a routerLink="/register"> Создайте </a>.</p>
   </div>
 </div>
+<app-popup [showModel]="showPopup"
+           (outputToParent)="toggleShowPopup()"
+           [header]="popupHeader"
+           [content]="popupContent">
 
-<!--<div class="limiter">-->
-<!--  <div class="container-login100">-->
-<!--    <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">-->
-<!--      <div class="login100-form validate-form">-->
-<!--					<span class="login100-form-title p-b-33">-->
-<!--						Account Login-->
-<!--					</span>-->
-
-<!--        <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">-->
-<!--          <input class="input100" type="text" [(ngModel)]="email" placeholder="Email">-->
-<!--          <span class="focus-input100-1"></span>-->
-<!--          <span class="focus-input100-2"></span>-->
-<!--        </div>-->
-
-<!--        <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">-->
-<!--          <input class="input100" type="password" [(ngModel)]="password" placeholder="Password">-->
-<!--          <span class="focus-input100-1"></span>-->
-<!--          <span class="focus-input100-2"></span>-->
-<!--        </div>-->
-
-<!--        <div class="container_login_btn ">-->
-<!--          <button (click)="login()" class="login_form_btn">-->
-<!--            Войти-->
-<!--          </button>-->
-<!--        </div>-->
-
-<!--        <div class="text-center">-->
-<!--						<span class="txt1">-->
-<!--							Нету аккаунта?-->
-<!--						</span>-->
-
-<!--          <a routerLink="/register" routerlinkactive="active" class="txt2 hov1">-->
-<!--            Зарегистрируйтесь-->
-<!--          </a>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+</app-popup>
 <app-footer></app-footer>

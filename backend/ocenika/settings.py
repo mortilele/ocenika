@@ -138,7 +138,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Almaty'
 
 USE_I18N = True
 
@@ -164,4 +164,4 @@ EMAIL_PORT = 587
 FROM_EMAIL = 'ali.mars.99@gmail.com'
 EMAIL_USE_TLS = True
 
-BACKEND_URL = "http://localhost:8000/"
+BACKEND_URL = "https://api.ocenika.com"

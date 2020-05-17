@@ -6,33 +6,35 @@
     <p>Эти данные анонимны, модерация использует ваши данные для удостоверения отзывов </p>
     <hr>
 
-    <label for="email"><b>Email *</b></label>
+    <label for="email"><b>Email <span class="required"> * </span></b></label>
     <input type="email" placeholder="Enter Email" [(ngModel)]="email" required>
 
-    <label for="psw"><b>Пароль * </b></label>
+    <label for="psw"><b>Пароль <span class="required"> * </span> </b></label>
     <input type="password" placeholder="Enter Password" [(ngModel)]="password" required>
 
-    <label for="psw"><b>Имя * </b></label>
+    <label for="psw"><b>Имя  <span class="required"> * </span> </b></label>
     <input type="text" placeholder="Enter Password" [(ngModel)]="firstName" required>
 
-    <label for="psw"><b>Фамилия * </b></label>
+    <label for="psw"><b>Фамилия  <span class="required"> * </span> </b></label>
     <input type="text" placeholder="Enter Password" [(ngModel)]="lastName" required>
 
     <label for="psw"><b>Номер телефона</b></label>
     <input type="text" placeholder="Enter Password" [(ngModel)]="phone" required>
 
-    <label for="psw"><b>Университет * </b></label>
-    <select [(ngModel)]="university">
-      <option value="1">КБТУ</option>
-      <option>МУИТ</option>
-      <option>КАЗНУ</option>
+    <label for="psw"><b>Университет  <span class="required"> * </span> </b></label>
+    <select [(ngModel)]="selectedUniversity">
+      <option *ngFor="let university of universities"
+              [value]="university.id"
+              [selected]="selectedUniversity === university.id">
+        {{university.abbreviation}}
+      </option>
     </select>
 
     <label for="psw"><b>Транскрипт</b></label>
     <input (change)="onFileChange($event)" type="file" placeholder="Enter Password" required>
 
     <hr>
-    <p>Создавая аккаунт, вы соглашаетесь с нашими <a href="#">Условиями и Конфиденциальностью</a>.</p>
+    <p>Создавая аккаунт, вы соглашаетесь с нашими <a routerLink="/policy">Условиями и Конфиденциальностью</a>.</p>
 
     <button (click)="registerUser()" class="registerbtn">Создать аккаунт</button>
   </div>
@@ -41,4 +43,9 @@
     <p>Есть аккаунт? <a routerLink="/login">Войдите</a>.</p>
   </div>
 </div>
+<app-popup [showModel]="showPopup"
+           (outputToParent)="toggleShowPopup()"
+           [header]="popupHeader"
+           [content]="popupContent"
+></app-popup>
 <app-footer></app-footer>

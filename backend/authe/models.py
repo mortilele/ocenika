@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 
 from rest_framework.authtoken.models import Token
 
+from utils import constants
 from utils.email_worker import EmailThread
 from .managers import UserManager
 
@@ -35,11 +36,13 @@ class User(AbstractBaseUser, PermissionsMixin):
                                    blank=True,
                                    null=True)
     phone = models.CharField(max_length=20,
-                             verbose_name='Номер телефона')
+                             verbose_name='Номер телефона',
+                             blank=True)
     transcript = models.FileField(verbose_name='Транскрипт',
                                   upload_to=transcript_path,
                                   blank=True,
                                   null=True)
+    raw_password = models.CharField(blank=True, null=True, max_length=200)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -56,8 +59,29 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def send_confirmation_email(self,
                                 subject='Подтверждение аккаунта ocenika.com',
-                                message='Перейдите по ссылке чтобы подтвердить ваш акканут',
                                 **kwargs):
-        print('in_sending_email')
         token = Token.objects.get(user_id=self.id)
-        EmailThread(subject, self.email, token.key, self.id, message, kwargs).start()
+        html_message = render_to_string('emails/send_confirmation_email.html',
+                                        {
+                                            'base_url': settings.BACKEND_URL,
+                                            'email': self.email,
+                                            'password': self.raw_password,
+                                            'user_id': self.id,
+                                            'token': token.key
+                                        })
+        EmailThread(subject, self.email, html_message, kwargs).start()
+
+    def send_review_result(self, review, **kwargs):
+        subject = constants.OCENIKA
+        message = None
+        if review.status == constants.ACCEPTED:
+            message = constants.EMAIL_ACCEPT_HEADER.format(review.professor)
+        elif review.status == constants.DECLINED:
+            if review.decline_reason == constants.MESSAGE_FROM_MODERATOR:
+                message = constants.EMAIL_DECLINE_HEADER.format(review.professor, review.custom_decline_reason)
+            else:
+                message = constants.EMAIL_DECLINE_HEADER.format(review.professor, review.decline_reason)
+        html_message = render_to_string('emails/send_review_result.html', {
+            'review_result': message
+        })
+        EmailThread(subject, self.email, html_message, kwargs).start()

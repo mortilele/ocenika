@@ -11,7 +11,7 @@ import {University} from './university';
 })
 export class ApiService {
 
-  baseUrl = 'http://localhost:8000';
+  baseUrl = 'https://ocenika.com';
   httpHeaders = new HttpHeaders(
     {'Content-Type': 'application/json'}
   );
@@ -22,7 +22,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  getAllUniversities(): Observable<University> {
+  getAllUniversities() {
     return this.http.get(this.baseUrl + '/api/universities/',
       {headers: this.httpHeaders})
       .pipe(
@@ -65,6 +65,10 @@ export class ApiService {
 
   getLastReviews() {
     return this.http.get(this.baseUrl + '/api/ratings/last_ratings/');
+  }
+
+  getPolicyURL() {
+    return this.http.get(this.baseUrl + '/api/policy');
   }
 
 

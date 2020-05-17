@@ -10,7 +10,10 @@ class UserAdmin(UserAdmin):
     # form = MainUserChangeForm
     # add_form = MainUserCreationForm
     list_display = ('id',
-                    'email')
+                    'email',
+                    'is_confirmed')
+    list_filter = ('is_confirmed', 'university')
+    search_fields = ('email', 'first_name', 'last_name', 'phone')
 
     fieldsets = (
         (None, {
@@ -21,6 +24,7 @@ class UserAdmin(UserAdmin):
                 'university',
                 'password',
                 'transcript',
+                'phone',
             )
         }),
         ('Permissions', {

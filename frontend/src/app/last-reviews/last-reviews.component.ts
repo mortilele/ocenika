@@ -15,6 +15,7 @@ export class LastReviewsComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.getReviews();
   }
 
   ngAfterViewInit() {
@@ -31,7 +32,6 @@ export class LastReviewsComponent implements OnInit, AfterViewInit {
       .subscribe(
         reviews => {
           this.reviews = reviews;
-          this.plusSlides(1);
         }
       );
   }

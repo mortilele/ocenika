@@ -1,1 +1,15 @@
-<p>popup works!</p>
+<div *ngIf="showModel" id="myModal" class="popup-modal">
+  <!-- Modal content -->
+  <div class="popup-content">
+    <div *ngIf="header" class="popup-header">
+      <span (click)="toggleShowModel()" class="close">&times;</span>
+      <h2>{{header}}</h2>
+    </div>
+    <div *ngIf="content" class="popup-body">
+      <p>{{content}}</p>
+    </div>
+<!--    <div class="popup-footer">-->
+<!--      <h3>Modal Footer</h3>-->
+<!--    </div>-->
+  </div>
+</div>

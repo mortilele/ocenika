@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from .models import User
 
 from django.contrib.auth import authenticate
@@ -39,15 +41,18 @@ class AuthTokenSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email',
+        fields = ['id',
+                  'email',
                   'first_name',
                   'last_name',
                   'password',
                   'transcript',
                   'phone',
-                  'university']
+                  'university',
+                  'is_confirmed']
         extra_kwargs = {
             'password': {'write_only': True},
+            'is_confirmed': {'read_only': True},
         }
 
     def create(self, validated_data):
@@ -55,5 +60,21 @@ class UserSerializer(serializers.ModelSerializer):
                                         email=validated_data['email'])
         user.first_name = validated_data['first_name']
         user.last_name = validated_data['last_name']
+        user.university = validated_data['university']
+        user.transcript = validated_data.get('transcript', None)
+        user.phone = validated_data.get('phone', None)
         user.save()
         return user
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', instance.password)
+        instance = super().update(instance, validated_data)
+        instance.set_password(password)
+        instance.raw_password = password
+        instance.save()
+        return instance
+
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        result['transcript'] = settings.BACKEND_URL + result['transcript'] if result['transcript'] else None
+        return result

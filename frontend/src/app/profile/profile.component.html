@@ -1,1 +1,53 @@
-<p>profile works!</p>
+<app-header [current]="'profile'"></app-header>
+<app-sub-header [title]="fullName" [url]="'/profile'"></app-sub-header>
+
+    <div class="row" style="margin-bottom: 30px">
+      <div class="col-75">
+        <div class="container">
+            <div class="row">
+              <div class="col-50">
+                <h3>Ваш профиль</h3>
+                <label for="fname"><i class="fa fa-user"></i> Имя </label>
+                <input type="text" id="fname" [(ngModel)]="userData.first_name" placeholder="Имя">
+                <label for="adr"><i class="fa fa-address-card-o"></i> Фамилия </label>
+                <input type="text" id="adr" [(ngModel)]="userData.last_name" placeholder="Фамилия">
+                <label for="email"><i class="fa fa-envelope"></i> Email</label>
+                <input type="text" id="email" [(ngModel)]="userData.email" placeholder="john@example.com" disabled>
+                <label>
+                  <input disabled type="checkbox" [checked]="userData.is_confirmed"> Аккаунт подтвержден?
+                </label>
+              </div>
+              <div class="col-50">
+                <h3>	&nbsp;</h3>
+                <label for="cname"><i class="fa fa-phone-square"></i> Номер телефона</label>
+                <input type="text" id="cname" [(ngModel)]="userData.phone" placeholder="+777777777">
+                <label for="ccnum"><i class="fa fa-university"></i> Университет</label>
+                <select [(ngModel)]="userData.university">
+                  <option *ngFor="let university of universities"
+                          [selected]="university.id === userData.university"
+                          [value]="university.id"
+                  >{{university.abbreviation}}</option>
+                </select>
+                <div class="row">
+                  <div class="col-50">
+                    <label for="expyear"><i class="fa fa-file-code-o"></i> Транскрипт</label>
+                    <input type="file" (change)="onFileChange($event)" placeholder="2018">
+                  </div>
+                  <div class="col-50">
+                    <label for="cvv">Текущий транскрипт</label>
+                    <a class="transcript" (click)="goToLink(userData.transcript)"> Transcript</a>
+                  </div>
+                </div>
+                <label for="cname"><i class="fa fa-user-secret"></i> Поменять пароль</label>
+                <input type="password" id="cname" [(ngModel)]="userData.password" placeholder="">
+              </div>
+
+            </div>
+
+            <input type="submit" (click)="updateUserProfile()" value="Обновить мой профиль" class="btn">
+        </div>
+      </div>
+    </div>
+
+
+<app-footer></app-footer>

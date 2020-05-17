@@ -21,7 +21,8 @@ class University(models.Model):
                              default=constants.NO_IMAGE)
     rating = models.FloatField(default=0,
                                blank=True,
-                               null=True)
+                               null=True,
+                               verbose_name='Рейтинг')
 
     def __str__(self):
         return self.name
@@ -60,16 +61,14 @@ class Professor(models.Model):
         return self.full_name
 
     def save(self, *args, **kwargs):
-        self.full_name = '{} {} {}'.format(self.first_name, self.last_name, self.patronymic)
+        self.full_name = '{} {} {}'.format(self.first_name, self.last_name, self.patronymic).strip()
         super(Professor, self).save(*args, **kwargs)
 
     def recalculate_average_rating(self):
         if self.ratings.exists():
-            print('here2')
-            valid_ratings = self.ratings.filter(created_at__gte=timezone.now()-relativedelta(months=6),
+            valid_ratings = self.ratings.filter(created_at__gte=timezone.now() - relativedelta(months=6),
                                                 status=constants.ACCEPTED)
             if valid_ratings:
-                print('here3')
                 valued_ratings = valid_ratings.filter(value__gte=1)
                 if valued_ratings:
                     self.average_rating = valued_ratings.aggregate(avg=Avg('value'))['avg']
@@ -92,6 +91,7 @@ class Subject(models.Model):
                                         blank=True)
     university = models.ManyToManyField(University,
                                         related_name='subjects',
+                                        verbose_name='Университеты',
                                         blank=True)
 
     def __str__(self):
@@ -127,14 +127,16 @@ class ProfessorReview(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.DO_NOTHING,
-                             related_name='professor_reviews')
+                             related_name='professor_reviews',
+                             verbose_name='Пользователь')
     review = models.TextField(verbose_name='Отзыв')
     value = models.PositiveSmallIntegerField(default=0,
                                              blank=True,
                                              validators=[
                                                  MinValueValidator(0),
                                                  MaxValueValidator(5)
-                                             ])
+                                             ],
+                                             verbose_name='Оценка')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     professor = models.ForeignKey(Professor,
@@ -148,9 +150,19 @@ class ProfessorReview(models.Model):
     subject = models.ForeignKey(Subject,
                                 on_delete=models.DO_NOTHING,
                                 blank=True,
-                                null=True)
-    moderator_message = models.CharField(max_length=100,
-                                         default='')
+                                null=True,
+                                verbose_name='Предмет')
+    moderator_message = models.CharField(max_length=500,
+                                         default='',
+                                         verbose_name='Сообщение от системы')
+    decline_reason = models.CharField(default=constants.NO_REASON,
+                                      choices=constants.REVIEW_DECLINE_REASONS,
+                                      max_length=500,
+                                      verbose_name='Причина отказа')
+    custom_decline_reason = models.CharField(blank=True,
+                                             null=True,
+                                             max_length=5000,
+                                             verbose_name='Комментарий причины отказа от модератора')
     objects = ProfessorReviewManager()
 
     def save(self, *args, **kwargs):
@@ -181,3 +193,10 @@ class RatingApplication(models.Model):
 
     def __str__(self):
         return f'{self.user} {self.review}'
+
+
+class PrivacyPolicy(models.Model):
+    file = models.FileField(verbose_name='Документ')
+
+    class Meta:
+        verbose_name = 'Политика конфиденциальности'

@@ -13,17 +13,27 @@ export class ProfessorsComponent implements OnInit {
   limit = 6;
   offset = 0;
   allProfessors;
-  @Input() universityId = -1;
+  universityId = -1;
 
   constructor(
     private apiService: ApiService
   ) { }
 
   ngOnInit(): void {
-    this.getProfessors();
     this.getUniversities();
     this.limit = 6;
     this.offset = 0;
+    if (history.state.data) {
+      try {
+        this.universityId = history.state.data.universityId;
+        this.getProfessorsByUniversity(this.universityId);
+
+      } catch (e) {
+        this.getProfessors();
+      }
+    } else {
+      this.getProfessors();
+    }
   }
 
   getProfessors() {
@@ -39,6 +49,7 @@ export class ProfessorsComponent implements OnInit {
   }
 
   getProfessorsByUniversity(universityId: any) {
+    this.universityId = universityId;
     this.apiService.getProfessorsByUniversity(universityId)
       .subscribe(professors => {this.allProfessors = professors; this.professors = professors; });
   }

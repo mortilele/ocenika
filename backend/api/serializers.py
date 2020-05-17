@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from api.models import University, Professor, ProfessorReview, Subject
+from api.models import University, Professor, ProfessorReview, Subject, PrivacyPolicy
 from authe.models import User
-from utils import constants, string_utils
+from utils import constants, string_utils, exceptions
 from rest_framework import status
 
 
@@ -35,7 +35,7 @@ class ProfessorSerializer(serializers.ModelSerializer):
         return result
 
     def get_ratings(self, obj):
-        return ProfessorReviewSerializer(obj.ratings.filter(status=constants.ACCEPTED), many=True).data
+        return ProfessorReviewListSerializer(obj.ratings.filter(status=constants.ACCEPTED), many=True).data
 
 
 class ProfessorCreateSerializer(serializers.ModelSerializer):
@@ -53,15 +53,21 @@ class ProfessorShortSerializer(serializers.ModelSerializer):
 class UniversityFullSerializer(serializers.ModelSerializer):
     class Meta:
         model = University
-        fields = ['id', 'name', 'abbreviation', 'description', 'logo', 'professor_set', 'subjects']
+        fields = ['id',
+                  'name',
+                  'abbreviation',
+                  'description',
+                  'logo',
+                  'professor_set',
+                  'subjects',
+                  'rating']
 
     professor_set = ProfessorShortSerializer(many=True, read_only=True)
     subjects = SubjectShortSerializer(many=True, read_only=True)
 
 
-class ProfessorReviewSerializer(serializers.ModelSerializer):
+class ProfessorReviewCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(write_only=True, default=None)
-    professor = ProfessorShortSerializer()
 
     class Meta:
         model = ProfessorReview
@@ -76,51 +82,59 @@ class ProfessorReviewSerializer(serializers.ModelSerializer):
         return output
 
     def complete(self):
-        CONFIRM_USER = 'Пожалуйста подтвердите ваш аккаунт '
-        CONFIRMATION_SEND = 'Мы отправили вам на почту ваши кредентиалы'
-        REVIEW_ON_MODERATION = 'Ваш отзыв успешно отправлен'
-        ASSIGN_TRANSCRIPT = 'Пожалуйста прикрепите транскрипт'
-        message = None
         user = self.context['request'].user
         email = self.validated_data.pop('email', None)
         if user and user.is_authenticated:
             if not user.is_confirmed:
-                message = CONFIRM_USER
-            elif user.transcript:
-                message = ASSIGN_TRANSCRIPT
+                message = constants.CONFIRM_USER
+            elif not user.transcript:
+                message = constants.ASSIGN_TRANSCRIPT
             else:
-                message = REVIEW_ON_MODERATION
+                message = constants.REVIEW_ON_MODERATION
         else:
             if email:
                 try:
                     user = User.objects.get(email=email)
-                    if user and not user.is_confirmed:
-                        message = CONFIRM_USER
+                    if not user.is_confirmed:
+                        message = constants.CONFIRM_USER
+                    elif not user.transcript:
+                        message = constants.ASSIGN_TRANSCRIPT
                     else:
-                        message = REVIEW_ON_MODERATION
+                        message = constants.REVIEW_ON_MODERATION
                 except Exception as e:
                     user = User.objects.create_user(email=email,
                                                     password=string_utils.generate_password())
-                    message = CONFIRMATION_SEND
+                    message = constants.CONFIRMATION_SEND
             else:
                 raise User.DoesNotExist
 
         professor = self.validated_data['professor']
         self.validated_data['user'] = user
         self.validated_data['moderator_message'] = message
-        if ProfessorReview.objects.last_review_in_week(user, professor):
-            return (
-                {
-                    'result': {
-                        'moderator_message': constants.REVIEW_ALREADY_SUBMITTED,
-                    }
-                },
-                status.HTTP_400_BAD_REQUEST
-            )
+        # if ProfessorReview.objects.last_review_in_week(user, professor):
+        #     raise exceptions.CommonException(detail=constants.REVIEW_ALREADY_SUBMITTED)
 
         rating = ProfessorReview.objects.create(**self.validated_data)
-        serializer = ProfessorReviewSerializer(instance=rating)
+        serializer = ProfessorReviewListSerializer(instance=rating)
         print(serializer.data)
         return serializer.data, status.HTTP_201_CREATED
 
 
+class ProfessorReviewListSerializer(serializers.ModelSerializer):
+    professor = ProfessorShortSerializer(read_only=True)
+    subject = SubjectShortSerializer(read_only=True)
+
+    class Meta:
+        model = ProfessorReview
+        exclude = ('updated_at', 'user')
+
+    def to_representation(self, instance):
+        output = super().to_representation(instance)
+        output['created_at'] = instance.created_at.strftime("%Y-%m-%d")
+        return output
+
+
+class PrivacyPolicySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PrivacyPolicy
+        fields = ('file', )
